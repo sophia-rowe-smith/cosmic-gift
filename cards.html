@@ -17,9 +17,8 @@
             color: #e6e6e6;
             min-height: 100vh;
             position: relative;
-            z-index: 2;
-            padding: 20px;
             overflow-x: hidden;
+            padding: 20px;
         }
         
         /* Twinkling Stars Background */
@@ -45,16 +44,21 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
         
-        /* Floating Side Navigation */
+        /* Floating Bottom Navigation */
         .floating-nav {
             position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 1000;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .nav-dot {
@@ -65,6 +69,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+            text-decoration: none;
+            display: block;
         }
         
         .nav-dot.active {
@@ -139,18 +145,12 @@
             transition: all 0.3s ease;
             z-index: 20;
             user-select: none;
-            min-height: 44px;
-            min-width: 44px;
         }
         
         .nav-arrows:hover {
             background: rgba(255, 215, 0, 0.2);
             transform: translateY(-50%) scale(1.1);
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-        }
-        
-        .nav-arrows:active {
-            transform: translateY(-50%) scale(0.95);
         }
         
         .nav-left {
@@ -168,10 +168,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         
-        /* Cards */
+        /* Card */
         .card {
             position: absolute;
             width: 400px;
@@ -182,45 +181,12 @@
             border-radius: 20px;
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
             cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.5s ease;
             user-select: none;
             overflow: hidden;
-        }
-        
-        .card.center {
-            transform: translateX(0) scale(1);
-            z-index: 10;
+            transform: scale(1);
             opacity: 1;
-        }
-        
-        .card.left {
-            transform: translateX(-160px) scale(0.8);
-            z-index: 5;
-            opacity: 0.6;
-        }
-        
-        .card.right {
-            transform: translateX(160px) scale(0.8);
-            z-index: 5;
-            opacity: 0.6;
-        }
-        
-        .card.far-left {
-            transform: translateX(-280px) scale(0.6);
-            z-index: 1;
-            opacity: 0.3;
-        }
-        
-        .card.far-right {
-            transform: translateX(280px) scale(0.6);
-            z-index: 1;
-            opacity: 0.3;
-        }
-        
-        .card.hidden {
-            opacity: 0;
-            transform: scale(0.5);
-            z-index: 0;
+            z-index: 10;
         }
         
         .card-face {
@@ -359,7 +325,7 @@
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .floating-nav {
-                right: 15px;
+                bottom: 20px;
             }
             
             .carousel-container {
@@ -370,14 +336,6 @@
             .card {
                 width: 350px;
                 height: 250px;
-            }
-            
-            .card.left, .card.right {
-                transform: translateX(-140px) scale(0.8);
-            }
-            
-            .card.right {
-                transform: translateX(140px) scale(0.8);
             }
             
             .nav-arrows {
@@ -401,7 +359,7 @@
             }
             
             .floating-nav {
-                right: 10px;
+                bottom: 15px;
             }
             
             .carousel-container {
@@ -411,14 +369,6 @@
             .card {
                 width: 300px;
                 height: 220px;
-            }
-            
-            .card.left, .card.right {
-                transform: translateX(-120px) scale(0.8);
-            }
-            
-            .card.right {
-                transform: translateX(120px) scale(0.8);
             }
             
             .card-face {
@@ -439,15 +389,6 @@
                 right: -20px;
             }
         }
-        
-        /* Performance optimizations */
-        .card {
-            will-change: transform, opacity;
-        }
-        
-        .nav-arrows {
-            will-change: transform;
-        }
     </style>
 </head>
 <body>
@@ -455,275 +396,92 @@
     
     <!-- Floating Side Navigation -->
     <div class="floating-nav">
-        <div class="nav-dot" onclick="goToPage('index.html')" title="Home"></div>
-        <div class="nav-dot active" onclick="goToPage('cards.html')" title="Cards"></div>
-        <div class="nav-dot" onclick="goToPage('stars.html')" title="Stars"></div>
-        <div class="nav-dot" onclick="goToPage('quantum.html')" title="Quantum"></div>
+        <a href="index.html" class="nav-dot" title="Home"></a>
+        <a href="cards.html" class="nav-dot active" title="Cards"></a>
+        <a href="stars.html" class="nav-dot" title="Stars"></a>
+        <a href="quantum.html" class="nav-dot" title="Quantum"></a>
     </div>
     
     <div class="container">
         <div class="header">
             <h1 class="title">Cosmic Cards</h1>
-            <p class="subtitle">Click center card to reveal insights • Swipe or click arrows to explore</p>
+            <p class="subtitle">Click center card to reveal insights • Use arrows to explore</p>
         </div>
         
         <div class="carousel-container">
-            <div class="nav-arrows nav-left" onclick="prevCard()" aria-label="Previous card">‹</div>
+            <div class="nav-arrows nav-left" onclick="prevCard()">‹</div>
             <div class="carousel-track" id="carouselTrack">
-                <!-- Cards will be dynamically generated here -->
+                <div class="card theme-roast" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <div class="card-main-content">
+                            <div class="card-theme-header">
+                                <span class="card-theme-label">roast</span>
+                                <span class="card-category">🔥</span>
+                            </div>
+                            <div class="card-title">The Virgo Rising Reality Check</div>
+                            <div class="card-target">For Peter</div>
+                        </div>
+                        <div class="card-hint">Click to reveal</div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="card-content">You literally cannot help but improve everything around you, including people who didn't ask to be improved 😂</div>
+                    </div>
+                </div>
             </div>
-            <div class="nav-arrows nav-right" onclick="nextCard()" aria-label="Next card">›</div>
+            <div class="nav-arrows nav-right" onclick="nextCard()">›</div>
         </div>
     </div>
     
     <script>
-        const cardData = {
-            roast: {
-                icon: '🔥',
-                label: 'roast',
-                cards: [
-                    { title: "The Virgo Rising Reality Check", target: "Peter", content: "You literally cannot help but improve everything around you, including people who didn't ask to be improved 😂" },
-                    { title: "Gemini Communication Overload", target: "Peter", content: "Uses 47 different analogies to explain one concept... and somehow they're all perfect" },
-                    { title: "The Leo Moon Drama", target: "Peter", content: "Takes godfather responsibilities so seriously, you'd think it was a royal decree" },
-                    { title: "Mars in Aries Impatience", target: "Peter", content: "When you want to help someone, waiting for them to ask first is not an option" },
-                    { title: "The Capricorn Saturn Lecture Mode", target: "Peter", content: "Can turn buying groceries into a life lesson about planning and responsibility" },
-                    { title: "Scorpio Moon Intensity Alert", target: "Sophia", content: "Feels family drama at a molecular level and isn't afraid to psychoanalyze everyone involved" },
-                    { title: "Aquarius Rebellion Phase", target: "Sophia", content: "Still thinks conventional life advice doesn't apply to them... Leo Moon godfather knows better" },
-                    { title: "Sagittarius Rising Wanderer", target: "Sophia", content: "Changes life direction more often than most people change clothes" },
-                    { title: "Venus in Pisces Softie", target: "Sophia", content: "Claims to be emotionally detached but cries at dog videos" },
-                    { title: "Mercury in Capricorn Overthinker", target: "Sophia", content: "Needs a 47-point plan before deciding what to have for lunch" }
-                ]
-            },
-            toast: {
-                icon: '✨',
-                label: 'toast',
-                cards: [
-                    { title: "The Aries Mars Champion", target: "Peter", content: "When life gets messy, you don't just offer support - you roll up your sleeves and fix things" },
-                    { title: "Gemini Wisdom Library", target: "Peter", content: "Somehow always has the exact life experience needed to guide any situation" },
-                    { title: "The Capricorn Structure Genius", target: "Peter", content: "Turns chaos into clarity and dreams into achievable plans" },
-                    { title: "Leo Moon Protector", target: "Peter", content: "Shows up for the people you love, no matter how complicated it gets" },
-                    { title: "Venus in Gemini Teacher", target: "Peter", content: "Makes learning feel like love - the rarest gift" },
-                    { title: "The Pisces Venus Heart", target: "Sophia", content: "Loves unconditionally even when family gets complicated - rare gift in this world" },
-                    { title: "Capricorn Mercury Wisdom", target: "Sophia", content: "Actually listens to advice AND implements it - godfather's dream student" },
-                    { title: "The Scorpio Transformation Power", target: "Sophia", content: "Turns life's intensity into genuine growth and helps others do the same" },
-                    { title: "Aquarius Saturn Innovation", target: "Sophia", content: "Takes traditional wisdom and makes it work for modern life" },
-                    { title: "Mars in Scorpio Loyalty", target: "Sophia", content: "Once you're in her circle, you're defended fiercely and forever" }
-                ]
-            },
-            synergy: {
-                icon: '🌟',
-                label: 'synergy',
-                cards: [
-                    { title: "The Teaching-Learning Loop", target: "Both", content: "Your Gemini teaching style + Her Capricorn learning style = Perfect knowledge transfer" },
-                    { title: "Emotional Balance Beam", target: "Both", content: "Your Leo warmth + Her Scorpio depth = Complete emotional spectrum coverage" },
-                    { title: "The Innovation-Implementation Team", target: "Both", content: "Her Aquarius ideas + Your Virgo execution = Dreams that actually happen" },
-                    { title: "Crisis Management Dream Team", target: "Both", content: "Your Mars in Aries action + Her Scorpio intensity = No problem too big" },
-                    { title: "The Communication Bridge", target: "Both", content: "Your Mercury in Gemini + Her Mercury in Capricorn = Every conversation has purpose and flow" }
-                ]
-            },
-            personality: {
-                icon: '💫',
-                label: 'personality',
-                cards: [
-                    { title: "Peter's Gemini Superpower", target: "Peter", content: "Can make any topic interesting and somehow relate it to three other completely different topics" },
-                    { title: "Sophia's Scorpio Radar", target: "Sophia", content: "Detects family drama from three states away and comes prepared with solutions" },
-                    { title: "The Leo Moon Theater", target: "Peter", content: "Every story becomes an epic tale worthy of Broadway adaptation" },
-                    { title: "Aquarius Innovation Station", target: "Sophia", content: "Finds the unconventional solution that somehow works better than the obvious one" },
-                    { title: "The Aries Mars Emergency Response", target: "Peter", content: "Response time from 'someone needs help' to 'problem solved' is approximately 0.3 seconds" }
-                ]
-            },
-            cosmic: {
-                icon: '🌙',
-                label: 'cosmic',
-                cards: [
-                    { title: "Air Sign Harmony", target: "Both", content: "Gemini Sun + Aquarius Sun = Mental telepathy activated" },
-                    { title: "The Leo-Scorpio Moon Dance", target: "Both", content: "Fire moon warmth meets water moon depth = perfect emotional balance" },
-                    { title: "Virgo-Sagittarius Rising Magic", target: "Both", content: "Practical wisdom meets adventurous spirit = growth with direction" },
-                    { title: "The Capricorn Connection", target: "Both", content: "His Jupiter/Saturn + Her Mercury = Wisdom that actually sticks" },
-                    { title: "Generational Scorpio Bond", target: "Both", content: "Both having major Scorpio placements = Understanding transformation together" }
-                ]
-            }
-        };
+        const cardData = [
+            { theme: 'roast', icon: '🔥', label: 'roast', title: 'The Virgo Rising Reality Check', target: 'Peter', content: 'You literally cannot help but improve everything around you, including people who didn\'t ask to be improved 😂' },
+            { theme: 'roast', icon: '🔥', label: 'roast', title: 'Gemini Communication Overload', target: 'Peter', content: 'Uses 47 different analogies to explain one concept... and somehow they\'re all perfect' },
+            { theme: 'roast', icon: '🔥', label: 'roast', title: 'The Leo Moon Drama', target: 'Peter', content: 'Takes godfather responsibilities so seriously, you\'d think it was a royal decree' },
+            { theme: 'toast', icon: '✨', label: 'toast', title: 'The Aries Mars Champion', target: 'Peter', content: 'When life gets messy, you don\'t just offer support - you roll up your sleeves and fix things' },
+            { theme: 'toast', icon: '✨', label: 'toast', title: 'Gemini Wisdom Library', target: 'Peter', content: 'Somehow always has the exact life experience needed to guide any situation' },
+            { theme: 'synergy', icon: '🌟', label: 'synergy', title: 'Air Sign Harmony', target: 'Both', content: 'Gemini Sun + Aquarius Sun = Mental telepathy activated' },
+            { theme: 'roast', icon: '🔥', label: 'roast', title: 'Scorpio Moon Intensity Alert', target: 'Sophia', content: 'Feels family drama at a molecular level and isn\'t afraid to psychoanalyze everyone involved' },
+            { theme: 'toast', icon: '✨', label: 'toast', title: 'The Pisces Venus Heart', target: 'Sophia', content: 'Loves unconditionally even when family gets complicated - rare gift in this world' }
+        ];
         
-        let allCards = [];
-        let currentIndex = 0;
-        let isFlipped = {};
+        let currentCardIndex = 0;
         
-        // Flatten all cards into one array
-        Object.keys(cardData).forEach(category => {
-            cardData[category].cards.forEach(card => {
-                allCards.push({
-                    ...card,
-                    category: category,
-                    icon: cardData[category].icon,
-                    label: cardData[category].label
-                });
-            });
-        });
-        
-        // Shuffle cards for random order
-        allCards = allCards.sort(() => Math.random() - 0.5);
-        
-        function createCard(cardInfo, index) {
-            const card = document.createElement('div');
-            card.className = `card theme-${cardInfo.category}`;
-            card.dataset.index = index;
+        function updateCard() {
+            const card = cardData[currentCardIndex];
+            const cardElement = document.querySelector('.card');
             
-            card.innerHTML = `
+            cardElement.className = `card theme-${card.theme}`;
+            cardElement.innerHTML = `
                 <div class="card-face card-front">
                     <div class="card-main-content">
                         <div class="card-theme-header">
-                            <span class="card-theme-label">${cardInfo.label}</span>
-                            <span class="card-category">${cardInfo.icon}</span>
+                            <span class="card-theme-label">${card.label}</span>
+                            <span class="card-category">${card.icon}</span>
                         </div>
-                        <div class="card-title">${cardInfo.title}</div>
-                        <div class="card-target">For ${cardInfo.target}</div>
+                        <div class="card-title">${card.title}</div>
+                        <div class="card-target">For ${card.target}</div>
                     </div>
                     <div class="card-hint">Click to reveal</div>
                 </div>
                 <div class="card-face card-back">
-                    <div class="card-content">${cardInfo.content}</div>
+                    <div class="card-content">${card.content}</div>
                 </div>
             `;
-            
-            // Click functionality
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                if (!card.classList.contains('center')) {
-                    // If not center card, navigate to it
-                    const cardIndex = parseInt(card.dataset.index);
-                    goToCard(cardIndex);
-                } else {
-                    // If center card, flip it
-                    flipCard(index);
-                }
-            });
-            
-            return card;
         }
         
-        function flipCard(index) {
-            const card = document.querySelector(`[data-index="${index}"]`);
-            
-            if (!card) return;
-            
-            if (card.classList.contains('flipped')) {
-                card.classList.remove('flipped');
-                isFlipped[index] = false;
-            } else {
-                card.classList.add('flipped');
-                isFlipped[index] = true;
-            }
-        }
-        
-        function updateCardPositions() {
-            const track = document.getElementById('carouselTrack');
-            const cards = track.children;
-            const totalCards = allCards.length;
-            
-            for (let i = 0; i < cards.length; i++) {
-                const card = cards[i];
-                
-                // Calculate position with infinite wrapping
-                let position = (i - currentIndex + totalCards) % totalCards;
-                if (position > totalCards / 2) {
-                    position = position - totalCards;
-                }
-                
-                // Reset all classes
-                card.className = `card theme-${allCards[i].category}`;
-                
-                // Add flip state back if it was flipped
-                if (isFlipped[i]) {
-                    card.classList.add('flipped');
-                }
-                
-                // Position classes for infinite scroll
-                if (position === 0) {
-                    card.classList.add('center');
-                } else if (position === -1 || position === totalCards - 1) {
-                    card.classList.add('left');
-                } else if (position === 1 || position === -(totalCards - 1)) {
-                    card.classList.add('right');
-                } else if (position === -2 || position === totalCards - 2) {
-                    card.classList.add('far-left');
-                } else if (position === 2 || position === -(totalCards - 2)) {
-                    card.classList.add('far-right');
-                } else {
-                    card.classList.add('hidden');
-                }
-            }
-        }
-        
-        function goToCard(index) {
-            currentIndex = Math.max(0, Math.min(allCards.length - 1, index));
-            updateCardPositions();
+        function flipCard() {
+            document.querySelector('.card').classList.toggle('flipped');
         }
         
         function nextCard() {
-            currentIndex = (currentIndex + 1) % allCards.length;
-            updateCardPositions();
+            currentCardIndex = (currentCardIndex + 1) % cardData.length;
+            updateCard();
         }
         
         function prevCard() {
-            currentIndex = (currentIndex - 1 + allCards.length) % allCards.length;
-            updateCardPositions();
+            currentCardIndex = (currentCardIndex - 1 + cardData.length) % cardData.length;
+            updateCard();
         }
-        
-        // Initialize carousel
-        function initCarousel() {
-            const track = document.getElementById('carouselTrack');
-            
-            // Create all cards
-            allCards.forEach((cardInfo, index) => {
-                const card = createCard(cardInfo, index);
-                track.appendChild(card);
-            });
-            
-            // Initial position
-            updateCardPositions();
-        }
-        
-        // Touch/swipe functionality
-        let startX = 0;
-        let currentX = 0;
-        let isDragging = false;
-        
-        document.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            isDragging = true;
-        });
-        
-        document.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            currentX = e.touches[0].clientX;
-        });
-        
-        document.addEventListener('touchend', (e) => {
-            if (!isDragging) return;
-            isDragging = false;
-            
-            const diff = startX - currentX;
-            const threshold = 50;
-            
-            if (Math.abs(diff) > threshold) {
-                if (diff > 0) {
-                    nextCard();
-                } else {
-                    prevCard();
-                }
-            }
-        });
-        
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevCard();
-            } else if (e.key === 'ArrowRight') {
-                nextCard();
-            }
-        });
         
         // Create twinkling stars background
         function createStars() {
@@ -746,34 +504,34 @@
             }
         }
         
-        // Navigation functions
-        function goToPage(page) {
-            window.location.href = page;
-        }
+        // Touch/swipe functionality
+        let startX = 0;
+        let isDragging = false;
         
-        // Set active nav dot based on current page
-        document.addEventListener('DOMContentLoaded', () => {
-            createStars();
-            
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            const navDots = document.querySelectorAll('.nav-dot');
-            const pageOrder = ['index.html', 'cards.html', 'stars.html', 'quantum.html'];
-            const currentIndex = pageOrder.indexOf(currentPage);
-            
-            if (currentIndex !== -1) {
-                navDots.forEach((dot, i) => {
-                    dot.classList.toggle('active', i === currentIndex);
-                });
-            }
-            
-            // Initialize carousel
-            initCarousel();
+        document.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
         });
+        
+        document.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const diff = startX - e.changedTouches[0].clientX;
+            const threshold = 50;
+            
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    nextCard();
+                } else {
+                    prevCard();
+                }
+            }
+        });
+        
+        // Initialize
+        createStars();
+        updateCard();
     </script>
-<script>
-function goToPage(page) {
-    window.location.href = page;
-}
-</script>
 </body>
 </html>
