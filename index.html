@@ -1,20 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Peter!</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: Georgia, serif;
             background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
             color: white;
+            font-family: Georgia, serif;
             margin: 0;
             padding: 20px;
             min-height: 100vh;
@@ -45,7 +39,7 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
         
-        /* Working Navigation */
+        /* Floating Side Navigation */
         .floating-nav {
             position: fixed;
             right: 20px;
@@ -64,6 +58,7 @@
             background: rgba(255, 255, 255, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
         }
         
         .nav-dot.active {
@@ -75,22 +70,6 @@
         .nav-dot:hover {
             background: rgba(255, 215, 0, 0.7);
             transform: scale(1.2);
-        }
-        
-        /* Pages */
-        .page {
-            display: none;
-            min-height: 100vh;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .page.active {
-            display: block;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
         
         .container {
@@ -262,196 +241,10 @@
             font-style: italic;
         }
         
-        /* Cards Page */
-        .card-carousel {
-            max-width: 500px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        .card-display {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 30px 0;
-            min-height: 300px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .card-display:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
-        }
-        
-        .card-category {
-            font-size: 3em;
-            margin-bottom: 20px;
-        }
-        
-        .card-title {
-            font-size: 1.5em;
-            color: #ffd700;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        .card-target {
-            color: #b8c5d6;
-            margin-bottom: 20px;
-            font-style: italic;
-        }
-        
-        .card-content {
-            font-size: 1.2em;
-            line-height: 1.5;
-            color: #e6e6e6;
-            display: none;
-        }
-        
-        .card-display.flipped .card-content {
-            display: block;
-        }
-        
-        .card-display.flipped .card-category,
-        .card-display.flipped .card-title,
-        .card-display.flipped .card-target {
-            display: none;
-        }
-        
-        .card-nav {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        .nav-btn {
-            background: rgba(255, 215, 0, 0.2);
-            border: 1px solid rgba(255, 215, 0, 0.5);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            color: #ffd700;
-            cursor: pointer;
-            font-size: 1.5em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-btn:hover {
-            background: rgba(255, 215, 0, 0.4);
-            transform: scale(1.1);
-        }
-        
-        /* Stars Page */
-        .gratitude-list {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .gratitude-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-            border-left: 4px solid #ffd700;
-        }
-        
-        .gratitude-title {
-            color: #ffd700;
-            font-size: 1.3em;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        .gratitude-text {
-            color: #e6e6e6;
-            line-height: 1.6;
-        }
-        
-        .wish-section {
-            text-align: center;
-            margin: 50px 0;
-        }
-        
-        .wish-star {
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #ffd700 0%, #ff6b35 100%);
-            border-radius: 50% 10% 50% 50%;
-            margin: 30px auto;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5em;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        .wish-star:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
-        }
-        
-        /* Quantum Page */
-        .matrix-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        .matrix-item {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .matrix-item:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 215, 0, 0.5);
-        }
-        
-        .matrix-emoji {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-        }
-        
-        .matrix-title {
-            color: #ffd700;
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        
-        .matrix-description {
-            color: #e6e6e6;
-            font-size: 0.9em;
-            line-height: 1.4;
-        }
-        
-        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .floating-nav {
-                right: 15px;
-            }
-            
             .charts {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
             
             .container {
@@ -465,247 +258,152 @@
             h1 {
                 font-size: 2.5em;
             }
+            
+            .floating-nav {
+                right: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .card, .connection-section, .final-message {
+                padding: 20px 15px;
+            }
+            
+            .celebrate-btn {
+                padding: 15px 30px;
+                font-size: 1.1em;
+            }
+            
+            .floating-nav {
+                right: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
     
-    <!-- Working Navigation -->
-<div class="floating-nav">
-    <div class="nav-dot active" onclick="showPage(0)"></div>
-    <div class="nav-dot" onclick="showPage(1)"></div>
-    <div class="nav-dot" onclick="showPage(2)"></div>
-    <div class="nav-dot" onclick="showPage(3)"></div>
-</div>
-    
-    <!-- HOME PAGE -->
-    <div class="page active">
-        <div class="container">
-            <h1>🎁 Happy Birthday Peter! 🎁</h1>
-            
-            <div class="card">
-                <h2>A Cosmic Gift From Your Goddaughter</h2>
-                <p>After 30+ years of your guidance, wisdom, and unwavering support, I wanted to create something as unique as our relationship. This is a personalized astrological analysis exploring the cosmic forces that brought us together and why our connection feels so natural and meaningful.</p>
-            </div>
-            
-            <div class="charts">
-                <div class="chart">
-                    <h3>🌟 Your Cosmic Blueprint</h3>
-                    <p style="color: #b8c5d6; text-align: center; margin-bottom: 20px;">May 30, 1960 • Seattle, WA</p>
-                    <div class="planet">
-                        <span class="planet-name">☉ Sun</span>
-                        <span class="sign">Gemini</span>
-                    </div>
-                    <div class="planet">
-                        <span class="planet-name">☽ Moon</span>
-                        <span class="sign">Leo</span>
-                    </div>
-                    <div class="planet">
-                        <span class="planet-name">↗ Rising</span>
-                        <span class="sign">Virgo</span>
-                    </div>
-                    <div class="planet">
-                        <span class="planet-name">☿ Mercury</span>
-                        <span class="sign">Gemini</span>
-                    </div>
-                    <div class="planet">
-                        <span class="planet-name">♀ Venus</span>
-                        <span class="sign">Gemini</span>
-                    </div>
-                    <div class="planet">
-                        <span class="planet-name">♂ Mars</span>
-                        <span class="sign">Aries</span>
-                    </div>
-                </div>
-                
-                <div class="chart">
-                    <h3>🌙 My Cosmic Blueprint</h3>
-                    <p style="color: #b8c5d6; text-align: center; margin-bottom: 20px;">Jan 22, 1994 • Lake Forest, IL</p>
-                    <div class="planet">
-                        <span class="planet-name">☉ Sun</span>
-                        <span class="sign">Aquarius</span>
-                    </div>
-                    <div class="planet">
-                        <span class="planet-name">☽ Moon</span>
-                        <span class="sign">Taurus</span>
-                    </div>
-                    <div class="planet">
-                        <span class="planet-name">↗ Rising</span>
-                        <span class="sign">Gemini</span>
-                    </div>
-                    <div class="planet">
-                        <span class="planet-name">☿ Mercury</span>
-                        <span class="sign">Aquarius</span>
-                    </div>
-                    <div class="planet">
-                        <span class="planet-name">♀ Venus</span>
-                        <span class="sign">Aquarius</span>
-                    </div>
-                    <div class="planet">
-                        <span class="planet-name">♂ Mars</span>
-                        <span class="sign">Capricorn</span>
-                    </div>
-                </div>
-            </div>
-            
-            <button class="celebrate-btn" onclick="celebrate()">🎉 Celebrate Our Cosmic Bond! 🎉</button>
-            
-            <div class="connection-section">
-                <h2 style="color: #ffd700; text-align: center; margin-bottom: 30px; font-size: 2.2em;">✨ Our Cosmic Connection ✨</h2>
-                
-                <div class="connection-item">
-                    <div class="connection-title">🌬️ Air Sign Mental Telepathy</div>
-                    <div class="connection-text">Your Gemini Sun + my Aquarius Sun = perfect intellectual harmony. We think on similar wavelengths while bringing different perspectives.</div>
-                </div>
-                
-                <div class="connection-item">
-                    <div class="connection-title">🦁 The Leo Moon Warmth</div>
-                    <div class="connection-text">Your Leo Moon's generous, protective energy perfectly balances my Taurus Moon's need for stability and security.</div>
-                </div>
-                
-                <div class="connection-item">
-                    <div class="connection-title">🔥 Mars in Aries Action</div>
-                    <div class="connection-text">Your Mars in Aries explains why you don't just offer support - you take immediate action when someone you care about needs help.</div>
-                </div>
-            </div>
-            
-            <div class="final-message">
-                <h2>What The Stars Really Say</h2>
-                <p>The universe knew what it was doing when it put you in my life from day one. Your cosmic makeup created the perfect godfather.</p>
-                <p style="color: #ffd700; font-weight: bold; font-size: 1.4em; margin-top: 25px;">Thank you for being written in my stars. ⭐</p>
-            </div>
-        </div>
+    <!-- Floating Side Navigation -->
+    <div class="floating-nav">
+        <div class="nav-dot active" onclick="goToPage('index.html')" title="Home"></div>
+        <div class="nav-dot" onclick="goToPage('cards.html')" title="Cards"></div>
+        <div class="nav-dot" onclick="goToPage('stars.html')" title="Stars"></div>
+        <div class="nav-dot" onclick="goToPage('quantum.html')" title="Quantum"></div>
     </div>
     
-    <!-- CARDS PAGE -->
-    <div class="page">
-        <div class="container">
-            <h1>🎴 Cosmic Cards</h1>
-            <p style="color: #b8c5d6; font-style: italic; margin-bottom: 40px;">Click cards to flip • Use arrows to navigate</p>
-            
-            <div class="card-carousel">
-                <div class="card-display" onclick="flipCard()">
-                    <div class="card-category">🔥</div>
-                    <div class="card-title">The Virgo Rising Reality Check</div>
-                    <div class="card-target">For Peter</div>
-                    <div class="card-content">You literally cannot help but improve everything around you, including people who didn't ask to be improved 😂</div>
+    <div class="container">
+        <h1>🎁 Happy Birthday Peter! 🎁</h1>
+        
+        <div class="card">
+            <h2>A Cosmic Gift From Your Goddaughter</h2>
+            <p>After 30+ years of your guidance, wisdom, and unwavering support, I wanted to create something as unique as our relationship. This is a personalized astrological analysis exploring the cosmic forces that brought us together and why our connection feels so natural and meaningful.</p>
+            <p>The stellar forces that made you the ideal godfather for an Aquarius-Gemini kid who needed both intellectual freedom and emotional security.</p>
+        </div>
+        
+        <div class="charts">
+            <div class="chart">
+                <h3>🌟 Your Cosmic Blueprint</h3>
+                <p style="color: #b8c5d6; text-align: center; margin-bottom: 20px;">May 30, 1960 • 1:15 PM • Seattle, WA</p>
+                <div class="planet">
+                    <span class="planet-name">☉ Sun</span>
+                    <span class="sign">Gemini</span>
                 </div>
-                
-                <div class="card-nav">
-                    <div class="nav-btn" onclick="prevCard()">‹</div>
-                    <div class="nav-btn" onclick="nextCard()">›</div>
+                <div class="planet">
+                    <span class="planet-name">☽ Moon</span>
+                    <span class="sign">Leo</span>
+                </div>
+                <div class="planet">
+                    <span class="planet-name">↗ Rising</span>
+                    <span class="sign">Virgo</span>
+                </div>
+                <div class="planet">
+                    <span class="planet-name">☿ Mercury</span>
+                    <span class="sign">Gemini</span>
+                </div>
+                <div class="planet">
+                    <span class="planet-name">♀ Venus</span>
+                    <span class="sign">Gemini</span>
+                </div>
+                <div class="planet">
+                    <span class="planet-name">♂ Mars</span>
+                    <span class="sign">Aries</span>
+                </div>
+            </div>
+            
+            <div class="chart">
+                <h3>🌙 My Cosmic Blueprint</h3>
+                <p style="color: #b8c5d6; text-align: center; margin-bottom: 20px;">Jan 22, 1994 • 2:22 AM • Lake Forest, IL</p>
+                <div class="planet">
+                    <span class="planet-name">☉ Sun</span>
+                    <span class="sign">Aquarius</span>
+                </div>
+                <div class="planet">
+                    <span class="planet-name">☽ Moon</span>
+                    <span class="sign">Taurus</span>
+                </div>
+                <div class="planet">
+                    <span class="planet-name">↗ Rising</span>
+                    <span class="sign">Gemini</span>
+                </div>
+                <div class="planet">
+                    <span class="planet-name">☿ Mercury</span>
+                    <span class="sign">Aquarius</span>
+                </div>
+                <div class="planet">
+                    <span class="planet-name">♀ Venus</span>
+                    <span class="sign">Aquarius</span>
+                </div>
+                <div class="planet">
+                    <span class="planet-name">♂ Mars</span>
+                    <span class="sign">Capricorn</span>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- STARS PAGE -->
-    <div class="page">
-        <div class="container">
-            <h1>🌟 Counting My Lucky Stars</h1>
-            <p style="color: #b8c5d6; font-style: italic; margin-bottom: 40px;">This is a small constellation of thanks</p>
+        
+        <button class="celebrate-btn" onclick="celebrate()">🎉 Celebrate Our Cosmic Bond! 🎉</button>
+        
+        <div class="connection-section">
+            <h2 style="color: #ffd700; text-align: center; margin-bottom: 30px; font-size: 2.2em;">✨ Our Cosmic Connection ✨</h2>
             
-            <div class="gratitude-list">
-                <div class="gratitude-item">
-                    <div class="gratitude-title">🌟 For Seeing Potential</div>
-                    <div class="gratitude-text">When I couldn't see my own worth, you saw possibilities I never imagined. Your Gemini vision helped me understand that my Aquarius 'weirdness' was actually innovation waiting to happen.</div>
-                </div>
-                
-                <div class="gratitude-item">
-                    <div class="gratitude-title">⭐ For Steady Presence</div>
-                    <div class="gratitude-text">Through every phase, every crisis, every celebration - you've been my constant. Your Leo Moon loyalty created the emotional security I desperately needed.</div>
-                </div>
-                
-                <div class="gratitude-item">
-                    <div class="gratitude-title">✨ For Practical Magic</div>
-                    <div class="gratitude-text">You've taught me how to turn Aquarian dreams into Capricorn reality. Your earth sign wisdom helped ground my air sign ideas into achievable goals.</div>
-                </div>
-                
-                <div class="gratitude-item">
-                    <div class="gratitude-title">💫 For Family Navigation</div>
-                    <div class="gratitude-text">When family dynamics got complicated, you became my compass. Your understanding of loyalty vs. boundaries helped me navigate relationships with both love and wisdom.</div>
-                </div>
-                
-                <div class="gratitude-item">
-                    <div class="gratitude-title">🌠 For Growth Partnership</div>
-                    <div class="gratitude-text">We've grown together across decades and life stages. Your Gemini curiosity kept me learning, your Leo warmth kept me secure.</div>
-                </div>
+            <div class="connection-item">
+                <div class="connection-title">🌬️ Air Sign Mental Telepathy</div>
+                <div class="connection-text">Your Gemini Sun + my Aquarius Sun = perfect intellectual harmony. We think on similar wavelengths while bringing different perspectives. You bring communication mastery and knowledge-sharing, while I bring innovation and big-picture thinking. It's intellectual symbiosis at its finest.</div>
             </div>
             
-            <div class="wish-section">
-                <h3 style="color: #ffd700; font-size: 1.8em; margin-bottom: 20px;">Your Birthday Wish</h3>
-                <p style="color: #b8c5d6; margin-bottom: 30px;">I've made a lot of wishes thanks to you. Here's one I built for you.</p>
-                
-                <div class="wish-star" onclick="makeWish()">⭐</div>
-                
-                <p style="color: #ffd700; font-style: italic;">Click the star to make your birthday wish ✨</p>
+            <div class="connection-item">
+                <div class="connection-title">🦁 The Leo Moon Warmth</div>
+                <div class="connection-text">Your Leo Moon's generous, protective energy perfectly balances my Taurus Moon's need for stability and security. You bring the sunshine and celebration, while I bring grounding. Your Leo Moon loyalty meets my Taurus Moon steadiness - a bond that's both joyful and unshakeable.</div>
+            </div>
+            
+            <div class="connection-item">
+                <div class="connection-title">✨ Rising Sign Growth Dynamic</div>
+                <div class="connection-text">Your Virgo rising's desire to help and improve others combines perfectly with my Gemini rising's curiosity and adaptability. You see what needs to be optimized, while I bring versatility to implement changes. Together we create sustainable growth that's both practical and engaging.</div>
+            </div>
+            
+            <div class="connection-item">
+                <div class="connection-title">🔥 Mars in Aries Action</div>
+                <div class="connection-text">Your Mars in Aries explains why you don't just offer support - you take immediate action. When you see someone you care about struggling, you jump in with concrete help. You're not passive about the people you love; you actively champion them.</div>
             </div>
         </div>
-    </div>
-    
-    <!-- QUANTUM PAGE -->
-    <div class="page">
-        <div class="container">
-            <h1>⚛️ Our Cosmic Connection</h1>
-            <p style="color: #b8c5d6; font-style: italic; margin-bottom: 40px;">How the Stars Aligned Our Lives</p>
-            
-            <div class="card">
-                <h2>⚛️ Our Cosmic Connection Map</h2>
-                
-                <div class="matrix-grid">
-                    <div class="matrix-item">
-                        <div class="matrix-emoji">🌬️</div>
-                        <div class="matrix-title">Air Sign Harmony</div>
-                        <div class="matrix-description">Gemini Sun + Aquarius Sun = Mental telepathy activated</div>
-                    </div>
-                    
-                    <div class="matrix-item">
-                        <div class="matrix-emoji">🔥</div>
-                        <div class="matrix-title">Fire-Earth Balance</div>
-                        <div class="matrix-description">Leo Moon warmth meets Taurus Moon stability</div>
-                    </div>
-                    
-                    <div class="matrix-item">
-                        <div class="matrix-emoji">✨</div>
-                        <div class="matrix-title">Rising Magic</div>
-                        <div class="matrix-description">Virgo service + Gemini curiosity = Perfect growth dynamic</div>
-                    </div>
-                    
-                    <div class="matrix-item">
-                        <div class="matrix-emoji">⚡</div>
-                        <div class="matrix-title">Mercury Flow</div>
-                        <div class="matrix-description">Gemini teaching + Aquarius innovation = Wisdom exchange</div>
-                    </div>
-                    
-                    <div class="matrix-item">
-                        <div class="matrix-emoji">💫</div>
-                        <div class="matrix-title">Mars Power</div>
-                        <div class="matrix-description">Aries action + Capricorn strategy = Dreams realized</div>
-                    </div>
-                    
-                    <div class="matrix-item">
-                        <div class="matrix-emoji">🌊</div>
-                        <div class="matrix-title">Generational Bond</div>
-                        <div class="matrix-description">Shared cosmic timing = Destined connection</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="final-message">
-                <h2>Quantum Entanglement Confirmed</h2>
-                <p>The data is conclusive: our charts were cosmically designed to complement each other. We're quantum entangled across space and time. 🌌</p>
-            </div>
+        
+        <div class="final-message">
+            <h2>What The Stars Really Say</h2>
+            <p>The universe knew what it was doing when it put you in my life from day one. Your cosmic makeup - that communicative Gemini energy, protective Leo heart, service-oriented Virgo rising, and action-taking Aries Mars - created the perfect godfather.</p>
+            <p>You've been my constant through every phase, from childhood confusion to career uncertainty. You saw potential in me when I couldn't see it myself, and you've used your natural gifts to help me grow into who I'm becoming.</p>
+            <p style="color: #ffd700; font-weight: bold; font-size: 1.4em; margin-top: 25px;">Thank you for being written in my stars. ⭐</p>
         </div>
     </div>
     
     <script>
-        // Create stars
+        // Create twinkling stars background
         function createStars() {
             const starsContainer = document.getElementById('stars');
-            for (let i = 0; i < 80; i++) {
+            const numberOfStars = 80;
+            
+            for (let i = 0; i < numberOfStars; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
+                
                 const size = Math.random() * 3 + 1;
                 star.style.width = size + 'px';
                 star.style.height = size + 'px';
@@ -713,71 +411,36 @@
                 star.style.top = Math.random() * 100 + '%';
                 star.style.animationDelay = Math.random() * 3 + 's';
                 star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                
                 starsContainer.appendChild(star);
             }
         }
         
-        // Page navigation
-        let currentPage = 0;
-        const pages = document.querySelectorAll('.page');
-        const dots = document.querySelectorAll('.nav-dot');
+        // Navigation functions
+        function goToPage(page) {
+            window.location.href = page;
+        }
         
-        function showPage(pageIndex) {
-            // Hide all pages
-            pages.forEach(page => page.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
+        // Set active nav dot based on current page
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
             
-            // Show selected page
-            pages[pageIndex].classList.add('active');
-            dots[pageIndex].classList.add('active');
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navDots = document.querySelectorAll('.nav-dot');
+            const pageOrder = ['index.html', 'cards.html', 'stars.html', 'quantum.html'];
+            const currentIndex = pageOrder.findIndex(page => currentPage.includes(page.split('.')[0]));
             
-            currentPage = pageIndex;
-        }
+            if (currentIndex !== -1) {
+                navDots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+            }
+        });
         
-        // Card functionality
-        const cardData = [
-            { emoji: '🔥', title: 'The Virgo Rising Reality Check', target: 'Peter', content: 'You literally cannot help but improve everything around you, including people who didn\'t ask to be improved 😂' },
-            { emoji: '🔥', title: 'Gemini Communication Overload', target: 'Peter', content: 'Uses 47 different analogies to explain one concept... and somehow they\'re all perfect' },
-            { emoji: '🔥', title: 'The Leo Moon Drama', target: 'Peter', content: 'Takes godfather responsibilities so seriously, you\'d think it was a royal decree' },
-            { emoji: '✨', title: 'The Aries Mars Champion', target: 'Peter', content: 'When life gets messy, you don\'t just offer support - you roll up your sleeves and fix things' },
-            { emoji: '🔥', title: 'Scorpio Moon Intensity Alert', target: 'Sophia', content: 'Feels family drama at a molecular level and isn\'t afraid to psychoanalyze everyone involved' },
-            { emoji: '✨', title: 'The Pisces Venus Heart', target: 'Sophia', content: 'Loves unconditionally even when family gets complicated - rare gift in this world' },
-            { emoji: '🌟', title: 'Air Sign Harmony', target: 'Both', content: 'Gemini Sun + Aquarius Sun = Mental telepathy activated' }
-        ];
-        
-        let currentCardIndex = 0;
-        
-        function updateCard() {
-            const card = cardData[currentCardIndex];
-            const cardDisplay = document.querySelector('.card-display');
-            
-            cardDisplay.innerHTML = `
-                <div class="card-category">${card.emoji}</div>
-                <div class="card-title">${card.title}</div>
-                <div class="card-target">For ${card.target}</div>
-                <div class="card-content">${card.content}</div>
-            `;
-            
-            cardDisplay.classList.remove('flipped');
-        }
-        
-        function flipCard() {
-            document.querySelector('.card-display').classList.toggle('flipped');
-        }
-        
-        function nextCard() {
-            currentCardIndex = (currentCardIndex + 1) % cardData.length;
-            updateCard();
-        }
-        
-        function prevCard() {
-            currentCardIndex = (currentCardIndex - 1 + cardData.length) % cardData.length;
-            updateCard();
-        }
-        
-        // Celebration
+        // Celebration function
         function celebrate() {
             const emojis = ['⭐', '🌟', '✨', '💫', '🎉', '🎊'];
+            
             for (let i = 0; i < 25; i++) {
                 setTimeout(() => {
                     const confetti = document.createElement('div');
@@ -789,6 +452,7 @@
                     confetti.style.pointerEvents = 'none';
                     confetti.style.zIndex = '1000';
                     confetti.style.transition = 'all 3s ease-out';
+                    
                     document.body.appendChild(confetti);
                     
                     setTimeout(() => {
@@ -796,69 +460,12 @@
                         confetti.style.opacity = '0';
                     }, 100);
                     
-                    setTimeout(() => confetti.remove(), 3000);
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
                 }, i * 80);
             }
         }
-        
-        // Make wish
-        function makeWish() {
-            const messages = [
-                "Your wish has been sent to the stars! ⭐",
-                "The cosmos have received your wish! 🌟",
-                "Your wish is traveling through the galaxies! ✨"
-            ];
-            
-            alert(messages[Math.floor(Math.random() * messages.length)]);
-            
-            // Create shooting stars
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const star = document.createElement('div');
-                    star.innerHTML = '✨';
-                    star.style.position = 'fixed';
-                    star.style.left = Math.random() * 100 + '%';
-                    star.style.top = Math.random() * 50 + '%';
-                    star.style.fontSize = '2em';
-                    star.style.pointerEvents = 'none';
-                    star.style.zIndex = '999';
-                    star.style.transition = 'all 2s ease-out';
-                    document.body.appendChild(star);
-                    
-                    setTimeout(() => {
-                        star.style.transform = 'translateY(-100vh)';
-                        star.style.opacity = '0';
-                    }, 100);
-                    
-                    setTimeout(() => star.remove(), 2000);
-                }, i * 200);
-            }
-        }
-        
-        // Initialize
-        createStars();
-        updateCard();
-        
-        // Touch navigation for mobile
-        let startX = 0;
-        document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-        document.addEventListener('touchend', e => {
-            const endX = e.changedTouches[0].clientX;
-            const diff = startX - endX;
-            
-            if (Math.abs(diff) > 50) {
-                if (currentPage === 1) { // Cards page
-                    if (diff > 0) nextCard();
-                    else prevCard();
-                }
-            }
-        });
     </script>
-
-<script>
-function goToPage(page) {
-    window.location.href = page;
-}
-</script>
 </body>
 </html>
