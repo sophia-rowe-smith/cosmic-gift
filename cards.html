@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Cards | Written in the Stars</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Georgia, serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #e6e6e6;
+            min-height: 100vh;
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        /* Twinkling Stars Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Floating Side Navigation */
+        .floating-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-dot.active {
+            background: #ffd700;
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .nav-dot:hover {
+            background: rgba(255, 215, 0, 0.7);
+            transform: scale(1.2);
+        }
+        
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-size: clamp(2rem, 6vw, 3rem);
+            background: linear-gradient(45deg, #ffd700, #ff6b35);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .subtitle {
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+            color: #b8c5d6;
+            font-style: italic;
+        }
+        
+        /* Carousel Container */
+        .carousel-container {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            position: relative;
+            perspective: 1000px;
+        }
+        
+        .nav-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ffd700;
+            font-size: 1.8em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            z-index: 20;
+            user-select: none;
+            min-height: 44px;
+            min-width: 44px;
+        }
+        
+        .nav-arrows:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .nav-arrows:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        .nav-left {
+            left: -30px;
+        }
+        
+        .nav-right {
+            right: -30px;
+        }
+        
+        .carousel-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        /* Cards */
+        .card {
+            position: absolute;
+            width: 400px;
+            height: 280px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            user-select: none;
+            overflow: hidden;
+        }
+        
+        .card.center {
+            transform: translateX(0) scale(1);
+            z-index: 10;
+            opacity: 1;
+        }
+        
+        .card.left {
+            transform: translateX(-160px) scale(0.8);
+            z-index: 5;
+            opacity: 0.6;
+        }
+        
+        .card.right {
+            transform: translateX(160px) scale(0.8);
+            z-index: 5;
+            opacity: 0.6;
+        }
+        
+        .card.far-left {
+            transform: translateX(-280px) scale(0.6);
+            z-index: 1;
+            opacity: 0.3;
+        }
+        
+        .card.far-right {
+            transform: translateX(280px) scale(0.6);
+            z-index: 1;
+            opacity: 0.3;
+        }
+        
+        .card.hidden {
+            opacity: 0;
+            transform: scale(0.5);
+            z-index: 0;
+        }
+        
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 30px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card-front {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            opacity: 1;
+            z-index: 2;
+        }
+        
+        .card-back {
+            background: rgba(255, 215, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        .card.flipped .card-front {
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        .card.flipped .card-back {
+            opacity: 1;
+            z-index: 2;
+        }
+        
+        .card-main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .card-theme-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .card-category {
+            font-size: 2.5em;
+            order: 2;
+        }
+        
+        .card-theme-label {
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            font-style: italic;
+            font-weight: 600;
+            order: 1;
+            text-transform: capitalize;
+        }
+        
+        .card-title {
+            font-size: clamp(1.3rem, 4vw, 1.6rem);
+            font-weight: bold;
+            line-height: 1.3;
+            margin: 0 15px;
+            color: #e6e6e6;
+        }
+        
+        .card-target {
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            color: #b8c5d6;
+            font-style: italic;
+            font-weight: 500;
+        }
+        
+        .card-hint {
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            color: #b8c5d6;
+            font-style: italic;
+        }
+        
+        .card-content {
+            font-size: clamp(1.1rem, 4vw, 1.4rem);
+            color: #e6e6e6;
+            line-height: 1.5;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+        
+        /* Theme-specific styling */
+        .card.theme-roast .card-front {
+            border-color: rgba(255, 107, 53, 0.4);
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.15);
+        }
+        
+        .card.theme-toast .card-front {
+            border-color: rgba(123, 237, 159, 0.4);
+            box-shadow: 0 0 30px rgba(123, 237, 159, 0.15);
+        }
+        
+        .card.theme-synergy .card-front {
+            border-color: rgba(112, 161, 255, 0.4);
+            box-shadow: 0 0 30px rgba(112, 161, 255, 0.15);
+        }
+        
+        .card.theme-personality .card-front {
+            border-color: rgba(255, 105, 180, 0.4);
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.15);
+        }
+        
+        .card.theme-cosmic .card-front {
+            border-color: rgba(196, 78, 196, 0.4);
+            box-shadow: 0 0 30px rgba(196, 78, 196, 0.15);
+        }
+        
+        .theme-roast .card-theme-label { color: #ff6b35; }
+        .theme-toast .card-theme-label { color: #7bed9f; }
+        .theme-synergy .card-theme-label { color: #70a1ff; }
+        .theme-personality .card-theme-label { color: #ff69b4; }
+        .theme-cosmic .card-theme-label { color: #c44ec4; }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .floating-nav {
+                right: 15px;
+            }
+            
+            .carousel-container {
+                max-width: 100%;
+                height: 350px;
+            }
+            
+            .card {
+                width: 350px;
+                height: 250px;
+            }
+            
+            .card.left, .card.right {
+                transform: translateX(-140px) scale(0.8);
+            }
+            
+            .card.right {
+                transform: translateX(140px) scale(0.8);
+            }
+            
+            .nav-arrows {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5em;
+            }
+            
+            .nav-left {
+                left: -25px;
+            }
+            
+            .nav-right {
+                right: -25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .floating-nav {
+                right: 10px;
+            }
+            
+            .carousel-container {
+                height: 300px;
+            }
+            
+            .card {
+                width: 300px;
+                height: 220px;
+            }
+            
+            .card.left, .card.right {
+                transform: translateX(-120px) scale(0.8);
+            }
+            
+            .card.right {
+                transform: translateX(120px) scale(0.8);
+            }
+            
+            .card-face {
+                padding: 20px;
+            }
+            
+            .nav-arrows {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3em;
+            }
+            
+            .nav-left {
+                left: -20px;
+            }
+            
+            .nav-right {
+                right: -20px;
+            }
+        }
+        
+        /* Performance optimizations */
+        .card {
+            will-change: transform, opacity;
+        }
+        
+        .nav-arrows {
+            will-change: transform;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <!-- Floating Side Navigation -->
+    <div class="floating-nav">
+        <div class="nav-dot" onclick="goToPage('index.html')" title="Home"></div>
+        <div class="nav-dot active" onclick="goToPage('cards.html')" title="Cards"></div>
+        <div class="nav-dot" onclick="goToPage('stars.html')" title="Stars"></div>
+        <div class="nav-dot" onclick="goToPage('quantum.html')" title="Quantum"></div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Cosmic Cards</h1>
+            <p class="subtitle">Click center card to reveal insights • Swipe or click arrows to explore</p>
+        </div>
+        
+        <div class="carousel-container">
+            <div class="nav-arrows nav-left" onclick="prevCard()" aria-label="Previous card">‹</div>
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Cards will be dynamically generated here -->
+            </div>
+            <div class="nav-arrows nav-right" onclick="nextCard()" aria-label="Next card">›</div>
+        </div>
+    </div>
+    
+    <script>
+        const cardData = {
+            roast: {
+                icon: '🔥',
+                label: 'roast',
+                cards: [
+                    { title: "The Virgo Rising Reality Check", target: "Peter", content: "You literally cannot help but improve everything around you, including people who didn't ask to be improved 😂" },
+                    { title: "Gemini Communication Overload", target: "Peter", content: "Uses 47 different analogies to explain one concept... and somehow they're all perfect" },
+                    { title: "The Leo Moon Drama", target: "Peter", content: "Takes godfather responsibilities so seriously, you'd think it was a royal decree" },
+                    { title: "Mars in Aries Impatience", target: "Peter", content: "When you want to help someone, waiting for them to ask first is not an option" },
+                    { title: "The Capricorn Saturn Lecture Mode", target: "Peter", content: "Can turn buying groceries into a life lesson about planning and responsibility" },
+                    { title: "Scorpio Moon Intensity Alert", target: "Sophia", content: "Feels family drama at a molecular level and isn't afraid to psychoanalyze everyone involved" },
+                    { title: "Aquarius Rebellion Phase", target: "Sophia", content: "Still thinks conventional life advice doesn't apply to them... Leo Moon godfather knows better" },
+                    { title: "Sagittarius Rising Wanderer", target: "Sophia", content: "Changes life direction more often than most people change clothes" },
+                    { title: "Venus in Pisces Softie", target: "Sophia", content: "Claims to be emotionally detached but cries at dog videos" },
+                    { title: "Mercury in Capricorn Overthinker", target: "Sophia", content: "Needs a 47-point plan before deciding what to have for lunch" }
+                ]
+            },
+            toast: {
+                icon: '✨',
+                label: 'toast',
+                cards: [
+                    { title: "The Aries Mars Champion", target: "Peter", content: "When life gets messy, you don't just offer support - you roll up your sleeves and fix things" },
+                    { title: "Gemini Wisdom Library", target: "Peter", content: "Somehow always has the exact life experience needed to guide any situation" },
+                    { title: "The Capricorn Structure Genius", target: "Peter", content: "Turns chaos into clarity and dreams into achievable plans" },
+                    { title: "Leo Moon Protector", target: "Peter", content: "Shows up for the people you love, no matter how complicated it gets" },
+                    { title: "Venus in Gemini Teacher", target: "Peter", content: "Makes learning feel like love - the rarest gift" },
+                    { title: "The Pisces Venus Heart", target: "Sophia", content: "Loves unconditionally even when family gets complicated - rare gift in this world" },
+                    { title: "Capricorn Mercury Wisdom", target: "Sophia", content: "Actually listens to advice AND implements it - godfather's dream student" },
+                    { title: "The Scorpio Transformation Power", target: "Sophia", content: "Turns life's intensity into genuine growth and helps others do the same" },
+                    { title: "Aquarius Saturn Innovation", target: "Sophia", content: "Takes traditional wisdom and makes it work for modern life" },
+                    { title: "Mars in Scorpio Loyalty", target: "Sophia", content: "Once you're in her circle, you're defended fiercely and forever" }
+                ]
+            },
+            synergy: {
+                icon: '🌟',
+                label: 'synergy',
+                cards: [
+                    { title: "The Teaching-Learning Loop", target: "Both", content: "Your Gemini teaching style + Her Capricorn learning style = Perfect knowledge transfer" },
+                    { title: "Emotional Balance Beam", target: "Both", content: "Your Leo warmth + Her Scorpio depth = Complete emotional spectrum coverage" },
+                    { title: "The Innovation-Implementation Team", target: "Both", content: "Her Aquarius ideas + Your Virgo execution = Dreams that actually happen" },
+                    { title: "Crisis Management Dream Team", target: "Both", content: "Your Mars in Aries action + Her Scorpio intensity = No problem too big" },
+                    { title: "The Communication Bridge", target: "Both", content: "Your Mercury in Gemini + Her Mercury in Capricorn = Every conversation has purpose and flow" }
+                ]
+            },
+            personality: {
+                icon: '💫',
+                label: 'personality',
+                cards: [
+                    { title: "Peter's Gemini Superpower", target: "Peter", content: "Can make any topic interesting and somehow relate it to three other completely different topics" },
+                    { title: "Sophia's Scorpio Radar", target: "Sophia", content: "Detects family drama from three states away and comes prepared with solutions" },
+                    { title: "The Leo Moon Theater", target: "Peter", content: "Every story becomes an epic tale worthy of Broadway adaptation" },
+                    { title: "Aquarius Innovation Station", target: "Sophia", content: "Finds the unconventional solution that somehow works better than the obvious one" },
+                    { title: "The Aries Mars Emergency Response", target: "Peter", content: "Response time from 'someone needs help' to 'problem solved' is approximately 0.3 seconds" }
+                ]
+            },
+            cosmic: {
+                icon: '🌙',
+                label: 'cosmic',
+                cards: [
+                    { title: "Air Sign Harmony", target: "Both", content: "Gemini Sun + Aquarius Sun = Mental telepathy activated" },
+                    { title: "The Leo-Scorpio Moon Dance", target: "Both", content: "Fire moon warmth meets water moon depth = perfect emotional balance" },
+                    { title: "Virgo-Sagittarius Rising Magic", target: "Both", content: "Practical wisdom meets adventurous spirit = growth with direction" },
+                    { title: "The Capricorn Connection", target: "Both", content: "His Jupiter/Saturn + Her Mercury = Wisdom that actually sticks" },
+                    { title: "Generational Scorpio Bond", target: "Both", content: "Both having major Scorpio placements = Understanding transformation together" }
+                ]
+            }
+        };
+        
+        let allCards = [];
+        let currentIndex = 0;
+        let isFlipped = {};
+        
+        // Flatten all cards into one array
+        Object.keys(cardData).forEach(category => {
+            cardData[category].cards.forEach(card => {
+                allCards.push({
+                    ...card,
+                    category: category,
+                    icon: cardData[category].icon,
+                    label: cardData[category].label
+                });
+            });
+        });
+        
+        // Shuffle cards for random order
+        allCards = allCards.sort(() => Math.random() - 0.5);
+        
+        function createCard(cardInfo, index) {
+            const card = document.createElement('div');
+            card.className = `card theme-${cardInfo.category}`;
+            card.dataset.index = index;
+            
+            card.innerHTML = `
+                <div class="card-face card-front">
+                    <div class="card-main-content">
+                        <div class="card-theme-header">
+                            <span class="card-theme-label">${cardInfo.label}</span>
+                            <span class="card-category">${cardInfo.icon}</span>
+                        </div>
+                        <div class="card-title">${cardInfo.title}</div>
+                        <div class="card-target">For ${cardInfo.target}</div>
+                    </div>
+                    <div class="card-hint">Click to reveal</div>
+                </div>
+                <div class="card-face card-back">
+                    <div class="card-content">${cardInfo.content}</div>
+                </div>
+            `;
+            
+            // Click functionality
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                if (!card.classList.contains('center')) {
+                    // If not center card, navigate to it
+                    const cardIndex = parseInt(card.dataset.index);
+                    goToCard(cardIndex);
+                } else {
+                    // If center card, flip it
+                    flipCard(index);
+                }
+            });
+            
+            return card;
+        }
+        
+        function flipCard(index) {
+            const card = document.querySelector(`[data-index="${index}"]`);
+            
+            if (!card) return;
+            
+            if (card.classList.contains('flipped')) {
+                card.classList.remove('flipped');
+                isFlipped[index] = false;
+            } else {
+                card.classList.add('flipped');
+                isFlipped[index] = true;
+            }
+        }
+        
+        function updateCardPositions() {
+            const track = document.getElementById('carouselTrack');
+            const cards = track.children;
+            const totalCards = allCards.length;
+            
+            for (let i = 0; i < cards.length; i++) {
+                const card = cards[i];
+                
+                // Calculate position with infinite wrapping
+                let position = (i - currentIndex + totalCards) % totalCards;
+                if (position > totalCards / 2) {
+                    position = position - totalCards;
+                }
+                
+                // Reset all classes
+                card.className = `card theme-${allCards[i].category}`;
+                
+                // Add flip state back if it was flipped
+                if (isFlipped[i]) {
+                    card.classList.add('flipped');
+                }
+                
+                // Position classes for infinite scroll
+                if (position === 0) {
+                    card.classList.add('center');
+                } else if (position === -1 || position === totalCards - 1) {
+                    card.classList.add('left');
+                } else if (position === 1 || position === -(totalCards - 1)) {
+                    card.classList.add('right');
+                } else if (position === -2 || position === totalCards - 2) {
+                    card.classList.add('far-left');
+                } else if (position === 2 || position === -(totalCards - 2)) {
+                    card.classList.add('far-right');
+                } else {
+                    card.classList.add('hidden');
+                }
+            }
+        }
+        
+        function goToCard(index) {
+            currentIndex = Math.max(0, Math.min(allCards.length - 1, index));
+            updateCardPositions();
+        }
+        
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % allCards.length;
+            updateCardPositions();
+        }
+        
+        function prevCard() {
+            currentIndex = (currentIndex - 1 + allCards.length) % allCards.length;
+            updateCardPositions();
+        }
+        
+        // Initialize carousel
+        function initCarousel() {
+            const track = document.getElementById('carouselTrack');
+            
+            // Create all cards
+            allCards.forEach((cardInfo, index) => {
+                const card = createCard(cardInfo, index);
+                track.appendChild(card);
+            });
+            
+            // Initial position
+            updateCardPositions();
+        }
+        
+        // Touch/swipe functionality
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+        
+        document.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            currentX = e.touches[0].clientX;
+        });
+        
+        document.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const diff = startX - currentX;
+            const threshold = 50;
+            
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    nextCard();
+                } else {
+                    prevCard();
+                }
+            }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevCard();
+            } else if (e.key === 'ArrowRight') {
+                nextCard();
+            }
+        });
+        
+        // Create twinkling stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 80;
+            
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Navigation functions
+        function goToPage(page) {
+            window.location.href = page;
+        }
+        
+        // Set active nav dot based on current page
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navDots = document.querySelectorAll('.nav-dot');
+            const pageOrder = ['index.html', 'cards.html', 'stars.html', 'quantum.html'];
+            const currentIndex = pageOrder.indexOf(currentPage);
+            
+            if (currentIndex !== -1) {
+                navDots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+            }
+            
+            // Initialize carousel
+            initCarousel();
+        });
+    </script>
+</body>
+</html>

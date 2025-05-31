@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counting My Lucky Stars</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #e6e6e6;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            min-height: 200vh;
+            touch-action: manipulation;
+        }
+        
+        /* Twinkling Stars Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Floating Side Navigation */
+        .floating-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-dot.active {
+            background: #ffd700;
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .nav-dot:hover {
+            background: rgba(255, 215, 0, 0.7);
+            transform: scale(1.2);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 100vw;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 0 60px;
+        }
+        
+        .title {
+            font-size: clamp(2.2em, 7vw, 3.5em);
+            background: linear-gradient(45deg, #ffd700, #ff6b35, #ffd700);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            line-height: 1.1;
+            font-weight: normal;
+        }
+        
+        .subtitle {
+            font-size: clamp(1em, 3.5vw, 1.3em);
+            color: #b8c5d6;
+            font-style: italic;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        /* Night Sky 1960 Container */
+        .night-sky-1960 {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 40px 0 60px 0;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            height: 400px;
+        }
+        
+        .sky-header {
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .sky-title {
+            font-size: clamp(1.2em, 4vw, 1.5em);
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        
+        .sky-date {
+            font-size: clamp(0.9em, 3vw, 1em);
+            color: #ff6b35;
+            margin-bottom: 5px;
+        }
+        
+        .sky-location {
+            font-size: clamp(0.8em, 2.5vw, 0.9em);
+            color: #b8c5d6;
+            margin-bottom: 15px;
+        }
+        
+        .sky-description {
+            font-size: clamp(0.9em, 3vw, 1em);
+            color: #e6e6e6;
+            line-height: 1.5;
+            font-style: italic;
+            max-width: 90%;
+            margin: 15px auto 0;
+        }
+        
+        .sky-description em {
+            color: #ffd700;
+            font-style: normal;
+        }
+        
+        .star-map {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.02) 0%, transparent 70%);
+        }
+        
+        .constellation {
+            position: absolute;
+        }
+        
+        .constellation-star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 4px #ffffff;
+        }
+        
+        .constellation-star.bright {
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            box-shadow: 0 0 6px #ffd700;
+        }
+        
+        .constellation-line {
+            position: absolute;
+            height: 1px;
+            background: rgba(255, 215, 0, 0.3);
+            transform-origin: left center;
+        }
+        
+        .constellation-label {
+            position: absolute;
+            color: rgba(255, 215, 0, 0.8);
+            font-size: 0.7em;
+            font-style: italic;
+        }
+        
+        /* Constellation of Gratitude - Scrolling Cards */
+        .constellation-of-gratitude {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px 15px;
+            margin: 40px 0;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            text-align: center;
+        }
+        
+        .gratitude-title {
+            font-size: clamp(1.2em, 4vw, 1.5em);
+            color: #ffd700;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .gratitude-subtitle {
+            font-size: clamp(0.9em, 3vw, 1em);
+            color: #b8c5d6;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .gratitude-stars {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 15px 5px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .gratitude-stars::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .gratitude-stars::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        
+        .gratitude-stars::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.6);
+            border-radius: 3px;
+        }
+        
+        .gratitude-badge {
+            flex: 0 0 auto;
+            min-width: 160px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 0 20px;
+            font-size: 0.9em;
+            color: #e6e6e6;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+        
+        .gratitude-badge:hover {
+            border-color: rgba(255, 215, 0, 0.8);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.2);
+        }
+        
+        /* Shooting Star Wish Section - Bottom Container */
+        .wish-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px 20px 0 0;
+            padding: 50px 25px 60px;
+            margin: 80px 0 0 0;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-bottom: none;
+            position: relative;
+            overflow: hidden;
+            min-height: 50vh;
+        }
+        
+        .wish-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .wish-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .wish-title {
+            font-size: clamp(1.4em, 5vw, 1.8em);
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .wish-intro {
+            color: #b8c5d6;
+            margin-bottom: 15px;
+            font-style: italic;
+            font-size: clamp(0.95em, 3vw, 1.1em);
+            line-height: 1.4;
+        }
+        
+        .wish-instructions {
+            color: #ffd700;
+            margin-bottom: 40px;
+            font-style: italic;
+            font-size: clamp(0.9em, 3vw, 1em);
+            font-weight: bold;
+        }
+        
+        .wish-drag-hint {
+            color: rgba(255, 215, 0, 0.8);
+            margin-bottom: 25px;
+            font-style: italic;
+            font-size: clamp(0.85em, 2.8vw, 0.95em);
+            opacity: 0.9;
+        }
+        
+        .wish-container {
+            position: relative;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 60px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            margin: 30px auto;
+            overflow: hidden;
+            max-width: 300px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .wish-star {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #ffd700 0%, #ff6b35 100%);
+            border-radius: 50% 10% 50% 50%;
+            transform: translateY(-50%) rotate(-15deg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2em;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 
+                        inset 0 0 20px rgba(255, 255, 255, 0.2),
+                        0 0 40px rgba(255, 107, 53, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            z-index: 10;
+            touch-action: none;
+        }
+        
+        .wish-star::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+        }
+        
+        .wish-star::before {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: -3px;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: sparkle 2s infinite 1s;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        
+        .wish-star:hover {
+            transform: translateY(-50%) rotate(-15deg) scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 
+                        inset 0 0 25px rgba(255, 255, 255, 0.3),
+                        0 0 50px rgba(255, 107, 53, 0.4);
+        }
+        
+        .wish-star.dragging {
+            transform: translateY(-50%) rotate(-15deg) scale(1.2);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 1), 
+                        inset 0 0 30px rgba(255, 255, 255, 0.4),
+                        0 0 60px rgba(255, 107, 53, 0.5);
+            z-index: 20;
+        }
+        
+        .wish-star.completed {
+            animation: starBurst 1s ease-out;
+        }
+        
+        @keyframes starBurst {
+            0% { transform: translateY(-50%) rotate(-15deg) scale(1.2); }
+            50% { 
+                transform: translateY(-50%) rotate(-15deg) scale(1.8); 
+                box-shadow: 0 0 80px rgba(255, 215, 0, 1),
+                           0 0 100px rgba(255, 107, 53, 0.8);
+            }
+            100% { 
+                transform: translateY(-50%) rotate(-15deg) scale(0) rotate(180deg); 
+                opacity: 0; 
+            }
+        }
+        
+        .wish-arrow {
+            position: absolute;
+            top: 50%;
+            right: 25px;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.5em;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: translateY(-50%) scale(1); }
+            50% { opacity: 1; transform: translateY(-50%) scale(1.1); }
+        }
+        
+        .wish-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+            font-style: italic;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .wish-text.show {
+            opacity: 1;
+        }
+        
+        .wish-message {
+            margin-top: 30px;
+            color: #ffd700;
+            font-style: italic;
+            opacity: 0;
+            transition: all 0.5s ease;
+            font-size: clamp(1em, 3.5vw, 1.2em);
+            font-weight: bold;
+        }
+        
+        .wish-message.show {
+            opacity: 1;
+            transform: translateY(-10px);
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .floating-nav {
+                right: 15px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .wish-container {
+                max-width: 280px;
+                height: 100px;
+            }
+            
+            .wish-star {
+                width: 70px;
+                height: 70px;
+                font-size: 2.2em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .floating-nav {
+                right: 10px;
+            }
+        }
+        
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .star, .wish-section::before {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <!-- Floating Side Navigation -->
+    <div class="floating-nav">
+        <div class="nav-dot active" onclick="goToPage('index.html')" title="Home"></div>
+        <div class="nav-dot" onclick="goToPage('cards.html')" title="Cards"></div>
+        <div class="nav-dot" onclick="goToPage('stars.html')" title="Stars"></div>
+        <div class="nav-dot" onclick="goToPage('quantum.html')" title="Quantum"></div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Counting My Lucky Stars</h1>
+            <p class="subtitle">This is a small constellation of thanks—for the way you've shown up, lit the path, and stayed in the sky.</p>
+        </div>
+        
+        <!-- Night Sky When He Was Born -->
+        <div class="night-sky-1960">
+            <div class="sky-header">
+                <h2 class="sky-title">Cosmic Context</h2>
+                <p class="sky-date">May 30, 1960 • 1:15 PM</p>
+                <p class="sky-location">Seattle, Washington</p>
+                <p class="sky-description">These were the stars overhead the night you came into the world. You didn't just arrive—you <em>tuned the frequency</em>.</p>
+            </div>
+            
+            <div class="star-map">
+                <!-- Big Dipper -->
+                <div class="constellation" style="top: 20%; left: 15%;">
+                    <div class="constellation-star bright" style="top: 0; left: 0;"></div>
+                    <div class="constellation-star" style="top: 10px; left: 15px;"></div>
+                    <div class="constellation-star" style="top: 20px; left: 30px;"></div>
+                    <div class="constellation-star" style="top: 25px; left: 45px;"></div>
+                    <div class="constellation-star" style="top: 35px; left: 60px;"></div>
+                    <div class="constellation-star" style="top: 50px; left: 70px;"></div>
+                    <div class="constellation-star" style="top: 65px; left: 80px;"></div>
+                    <div class="constellation-line" style="top: 3px; left: 3px; width: 15px; transform: rotate(33deg);"></div>
+                    <div class="constellation-line" style="top: 13px; left: 18px; width: 18px; transform: rotate(30deg);"></div>
+                    <div class="constellation-line" style="top: 23px; left: 33px; width: 18px; transform: rotate(15deg);"></div>
+                    <div class="constellation-line" style="top: 28px; left: 48px; width: 20px; transform: rotate(25deg);"></div>
+                    <div class="constellation-line" style="top: 38px; left: 63px; width: 22px; transform: rotate(40deg);"></div>
+                    <div class="constellation-line" style="top: 53px; left: 73px; width: 18px; transform: rotate(50deg);"></div>
+                    <div class="constellation-label" style="top: -15px; left: 20px;">Ursa Major</div>
+                </div>
+                
+                <!-- Orion -->
+                <div class="constellation" style="top: 50%; right: 25%;">
+                    <div class="constellation-star bright" style="top: 0; left: 20px;"></div>
+                    <div class="constellation-star" style="top: 20px; left: 0;"></div>
+                    <div class="constellation-star" style="top: 20px; right: 0;"></div>
+                    <div class="constellation-star bright" style="top: 40px; left: 10px;"></div>
+                    <div class="constellation-star bright" style="top: 40px; left: 20px;"></div>
+                    <div class="constellation-star bright" style="top: 40px; left: 30px;"></div>
+                    <div class="constellation-star" style="top: 60px; left: 5px;"></div>
+                    <div class="constellation-star" style="top: 60px; right: 5px;"></div>
+                    <div class="constellation-line" style="top: 3px; left: 23px; width: 20px; transform: rotate(-45deg);"></div>
+                    <div class="constellation-line" style="top: 3px; left: 23px; width: 20px; transform: rotate(45deg);"></div>
+                    <div class="constellation-line" style="top: 43px; left: 13px; width: 10px;"></div>
+                    <div class="constellation-line" style="top: 43px; left: 23px; width: 10px;"></div>
+                    <div class="constellation-label" style="top: -15px; left: 5px;">Orion</div>
+                </div>
+                
+                <!-- Cassiopeia -->
+                <div class="constellation" style="top: 15%; right: 15%;">
+                    <div class="constellation-star" style="top: 0; left: 0;"></div>
+                    <div class="constellation-star bright" style="top: 15px; left: 20px;"></div>
+                    <div class="constellation-star" style="top: 5px; left: 40px;"></div>
+                    <div class="constellation-star" style="top: 20px; left: 60px;"></div>
+                    <div class="constellation-star" style="top: 10px; left: 80px;"></div>
+                    <div class="constellation-line" style="top: 3px; left: 3px; width: 22px; transform: rotate(35deg);"></div>
+                    <div class="constellation-line" style="top: 18px; left: 23px; width: 22px; transform: rotate(-25deg);"></div>
+                    <div class="constellation-line" style="top: 8px; left: 43px; width: 22px; transform: rotate(35deg);"></div>
+                    <div class="constellation-line" style="top: 23px; left: 63px; width: 22px; transform: rotate(-25deg);"></div>
+                    <div class="constellation-label" style="top: -15px; left: 15px;">Cassiopeia</div>
+                </div>
+                
+                <!-- Leo -->
+                <div class="constellation" style="bottom: 30%; left: 20%;">
+                    <div class="constellation-star bright" style="top: 0; left: 30px;"></div>
+                    <div class="constellation-star" style="top: 15px; left: 15px;"></div>
+                    <div class="constellation-star" style="top: 15px; left: 45px;"></div>
+                    <div class="constellation-star" style="top: 30px; left: 0;"></div>
+                    <div class="constellation-star" style="top: 30px; left: 60px;"></div>
+                    <div class="constellation-line" style="top: 3px; left: 33px; width: 20px; transform: rotate(-45deg);"></div>
+                    <div class="constellation-line" style="top: 3px; left: 33px; width: 20px; transform: rotate(45deg);"></div>
+                    <div class="constellation-label" style="top: -15px; left: 20px;">Leo</div>
+                </div>
+                
+                <!-- Additional field stars -->
+                <div class="constellation-star" style="top: 10%; left: 50%;"></div>
+                <div class="constellation-star" style="top: 25%; left: 70%;"></div>
+                <div class="constellation-star" style="top: 35%; left: 10%;"></div>
+                <div class="constellation-star bright" style="top: 45%; left: 80%;"></div>
+                <div class="constellation-star" style="top: 65%; left: 30%;"></div>
+                <div class="constellation-star" style="top: 75%; left: 60%;"></div>
+                <div class="constellation-star" style="top: 85%; left: 20%;"></div>
+                <div class="constellation-star bright" style="top: 90%; left: 75%;"></div>
+            </div>
+        </div>
+        
+        <!-- Constellation of Gratitude -->
+        <div class="constellation-of-gratitude">
+            <h2 class="gratitude-title">What You've Lit Up</h2>
+            <p class="gratitude-subtitle">5 brightest stars</p>
+            <div class="gratitude-stars">
+                <div class="gratitude-badge">🌟 For Seeing Potential</div>
+                <div class="gratitude-badge">⭐ For Steady Presence</div>
+                <div class="gratitude-badge">✨ For Practical Magic</div>
+                <div class="gratitude-badge">💫 For Family Navigation</div>
+                <div class="gratitude-badge">🌠 For Growth Partnership</div>
+            </div>
+        </div>
+        
+        <!-- Shooting Star Wish Section -->
+        <div class="wish-section">
+            <div class="wish-content">
+                <h3 class="wish-title">Your Wish, Goddaughter-Fueled</h3>
+                <p class="wish-intro">
+                    I've made a lot of wishes thanks to you. Here's one I built for you—charged with everything you taught me. Drag the star. Your wish is waiting.
+                </p>
+                <p class="wish-instructions">
+                    Drag the star across the cosmos to unlock your birthday wish ✨
+                </p>
+                <p class="wish-drag-hint">Hold and drag the star from left to right</p>
+                
+                <div class="wish-container" id="wishContainer">
+                    <div class="wish-star" id="wishStar">⭐</div>
+                    <div class="wish-arrow">→</div>
+                    <div class="wish-text" id="wishText">slide to wish</div>
+                </div>
+                
+                <div class="wish-message" id="wishMessage">
+                    Your wish has been sent across the stars! 🌠<br>
+                    May this year bring you everything your heart desires ✨
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create twinkling stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 80;
+            
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Navigation functions
+        function goToPage(page) {
+            window.location.href = page;
+        }
+        
+        // Set active nav dot based on current page
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navDots = document.querySelectorAll('.nav-dot');
+            const pageOrder = ['index.html', 'cards.html', 'stars.html', 'quantum.html'];
+            const currentIndex = pageOrder.indexOf(currentPage);
+            
+            if (currentIndex !== -1) {
+                navDots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+            }
+        });
+        
+        // Shooting star wish functionality (iPhone slide-to-unlock style)
+        const wishStar = document.getElementById('wishStar');
+        const wishContainer = document.getElementById('wishContainer');
+        const wishMessage = document.getElementById('wishMessage');
+        const wishText = document.getElementById('wishText');
+        
+        let isDragging = false;
+        let startPos = 0;
+        let currentPos = 0;
+        const containerWidth = 220; // Approximate usable width
+        const starWidth = 80;
+        const maxPosition = containerWidth - starWidth;
+        
+        function resetWishStar() {
+            wishStar.style.left = '20px';
+            wishStar.classList.remove('dragging', 'completed');
+            wishText.classList.remove('show');
+            currentPos = 0;
+        }
+        
+        // Touch events for wish star
+        wishStar.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            isDragging = true;
+            startPos = e.touches[0].clientX;
+            wishStar.classList.add('dragging');
+            wishText.classList.add('show');
+            hapticFeedback();
+        });
+        
+        wishStar.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            
+            const touch = e.touches[0];
+            const deltaX = touch.clientX - startPos;
+            currentPos = Math.max(0, Math.min(maxPosition, deltaX));
+            
+            wishStar.style.left = (20 + currentPos) + 'px';
+            
+            // Add sparkle effect as user drags
+            const progress = currentPos / maxPosition;
+            const hue = progress * 60; // From gold to white
+            wishStar.style.filter = `hue-rotate(${hue}deg) brightness(${1 + progress * 0.5})`;
+            
+            // Show progress in text opacity
+            wishText.style.opacity = 0.7 + (progress * 0.3);
+        });
+        
+        wishStar.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            
+            const progress = currentPos / maxPosition;
+            
+            if (progress >= 0.8) {
+                // Wish completed!
+                wishStar.classList.add('completed');
+                wishStar.style.left = (20 + maxPosition) + 'px';
+                
+                setTimeout(() => {
+                    wishMessage.classList.add('show');
+                    createWishBurst();
+                    
+                    setTimeout(() => {
+                        resetWishStar();
+                        wishMessage.classList.remove('show');
+                    }, 4000);
+                }, 500);
+                
+                hapticFeedback();
+                hapticFeedback(); // Double vibration for success
+            } else {
+                // Snap back
+                resetWishStar();
+            }
+            
+            isDragging = false;
+        });
+        
+        // Mouse events for desktop
+        wishStar.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            isDragging = true;
+            startPos = e.clientX;
+            wishStar.classList.add('dragging');
+            wishText.classList.add('show');
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            
+            const deltaX = e.clientX - startPos;
+            currentPos = Math.max(0, Math.min(maxPosition, deltaX));
+            
+            wishStar.style.left = (20 + currentPos) + 'px';
+            
+            const progress = currentPos / maxPosition;
+            const hue = progress * 60;
+            wishStar.style.filter = `hue-rotate(${hue}deg) brightness(${1 + progress * 0.5})`;
+            wishText.style.opacity = 0.7 + (progress * 0.3);
+        });
+        
+        document.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            
+            const progress = currentPos / maxPosition;
+            
+            if (progress >= 0.8) {
+                wishStar.classList.add('completed');
+                wishStar.style.left = (20 + maxPosition) + 'px';
+                
+                setTimeout(() => {
+                    wishMessage.classList.add('show');
+                    createWishBurst();
+                    
+                    setTimeout(() => {
+                        resetWishStar();
+                        wishMessage.classList.remove('show');
+                    }, 4000);
+                }, 500);
+            } else {
+                resetWishStar();
+            }
+            
+            isDragging = false;
+        });
+        
+        function createWishBurst() {
+            // Random wish messages
+            const wishMessages = [
+                "This one's wired with goddaughter voltage. Use it wisely.",
+                "Wish deployed. May it land exactly where it needs to.",
+                "Transmitting wish: built from all the light you gave me.",
+                "You've earned this one. Consider it karmically backdated.",
+                "Launched. May it ripple back in ways you didn't expect.",
+                "Sealed with chaos, care, and cosmic timing."
+            ];
+            
+            // Update wish message with random selection
+            const randomMessage = wishMessages[Math.floor(Math.random() * wishMessages.length)];
+            wishMessage.innerHTML = `${randomMessage}<br><span style="color: #ff6b35; font-size: 0.9em;">✨ Happy Birthday ✨</span>`;
+            
+            // Create multiple shooting stars when wish is made
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    createShootingStar();
+                }, i * 150);
+            }
+        }
+        
+        function createShootingStar() {
+            const shootingStar = document.createElement('div');
+            shootingStar.style.position = 'fixed';
+            shootingStar.style.left = Math.random() * 80 + '%';
+            shootingStar.style.top = Math.random() * 60 + '%';
+            shootingStar.style.width = '3px';
+            shootingStar.style.height = '3px';
+            shootingStar.style.background = 'linear-gradient(45deg, #ffd700, #fff, #ff6b35)';
+            shootingStar.style.borderRadius = '50%';
+            shootingStar.style.animation = 'shoot 3s linear';
+            shootingStar.style.opacity = '0';
+            shootingStar.style.boxShadow = '0 0 6px #ffd700';
+            shootingStar.style.zIndex = '999';
+            shootingStar.style.pointerEvents = 'none';
+            
+            document.body.appendChild(shootingStar);
+            
+            setTimeout(() => {
+                shootingStar.remove();
+            }, 3000);
+        }
+        
+        // Add shoot animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shoot {
+                0% {
+                    opacity: 1;
+                    transform: translateX(-120px) translateY(120px) rotate(45deg);
+                }
+                70% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateX(120px) translateY(-120px) rotate(45deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Haptic feedback
+        function hapticFeedback() {
+            if ('vibrate' in navigator) {
+                navigator.vibrate(30);
+            }
+        }
+        
+        // Prevent default touch behaviors that might interfere
+        document.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>

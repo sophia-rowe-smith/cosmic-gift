@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proof It Was Never Random | Written in the Stars</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #e6e6e6;
+            min-height: 100vh;
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        /* Twinkling Stars Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Floating Side Navigation */
+        .floating-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-dot.active {
+            background: #ffd700;
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .nav-dot:hover {
+            background: rgba(255, 215, 0, 0.7);
+            transform: scale(1.2);
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+        }
+        
+        .title {
+            font-size: 3em;
+            background: linear-gradient(45deg, #ffd700, #ff6b35);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            animation: titleGlow 3s infinite ease-in-out;
+        }
+        
+        @keyframes titleGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            color: #b8c5d6;
+            margin-bottom: 20px;
+        }
+        
+        .birthday-message {
+            font-size: 1.2em;
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px 30px;
+            border-radius: 15px;
+            display: inline-block;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        /* Quantum Field Visualization */
+        .quantum-field-section {
+            margin: 80px 0;
+        }
+        
+        .section-title {
+            font-size: 2.2em;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .quantum-field {
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 60px 40px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            min-height: 400px;
+            overflow: hidden;
+        }
+        
+        /* Animated Quantum Particles */
+        .quantum-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff6b35;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+        
+        .particle.gold {
+            background: #ffd700;
+        }
+        
+        .particle.purple {
+            background: #b8c5d6;
+        }
+        
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) translateX(0px); 
+                opacity: 0.7; 
+            }
+            25% { 
+                transform: translateY(-20px) translateX(10px); 
+                opacity: 1; 
+            }
+            50% { 
+                transform: translateY(-10px) translateX(-15px); 
+                opacity: 0.8; 
+            }
+            75% { 
+                transform: translateY(-25px) translateX(5px); 
+                opacity: 1; 
+            }
+        }
+        
+        /* Entanglement Cards Carousel */
+        .entanglement-web {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .web-title {
+            font-size: 1.8em;
+            color: #ffd700;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        
+        .entanglement-carousel {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .entanglement-nav-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ffd700;
+            font-size: 1.5em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            z-index: 20;
+            user-select: none;
+        }
+        
+        .entanglement-nav-arrows:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .entanglement-nav-left {
+            left: -25px;
+        }
+        
+        .entanglement-nav-right {
+            right: -25px;
+        }
+        
+        .entanglement-cards-container {
+            overflow: hidden;
+            border-radius: 20px;
+        }
+        
+        .entanglement-cards-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 20px;
+        }
+        
+        .entanglement-card {
+            min-width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .card-emoji {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .card-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 12px;
+        }
+        
+        .card-connection {
+            font-size: 1em;
+            color: #ff6b35;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .card-subtitle {
+            font-size: 1.1em;
+            color: #b8c5d6;
+            margin-bottom: 15px;
+            font-style: italic;
+            font-weight: bold;
+        }
+        
+        .card-copy {
+            font-size: 1em;
+            line-height: 1.5;
+            color: #e6e6e6;
+        }
+        
+        .entanglement-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        
+        .entanglement-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .entanglement-dot.active {
+            background: #ffd700;
+            transform: scale(1.3);
+        }
+        
+        .entanglement-dot:hover {
+            background: rgba(255, 215, 0, 0.7);
+            transform: scale(1.2);
+        }
+        
+        /* Interactive Timeline */
+        .timeline-section {
+            margin: 80px 0;
+        }
+        
+        .timeline-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .timeline-scroll {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 20px 0 40px;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 215, 0, 0.5) transparent;
+        }
+        
+        .timeline-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .timeline-scroll::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        .timeline-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.5);
+            border-radius: 4px;
+        }
+        
+        .timeline-card {
+            min-width: 320px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .timeline-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+        
+        .timeline-year {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff6b35;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-title {
+            font-size: 1.3em;
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .timeline-description {
+            line-height: 1.6;
+            color: #e6e6e6;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+        
+        .cosmic-details {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            font-size: 0.9em;
+            color: #b8c5d6;
+        }
+        
+        .scroll-hint {
+            text-align: center;
+            margin-top: 20px;
+            color: #ffd700;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        /* Crystal Ball */
+        .fortune-section {
+            text-align: center;
+            margin: 80px 0;
+            padding: 60px 20px;
+        }
+        
+        .crystal-container {
+            position: relative;
+            display: inline-block;
+            margin: 30px 0;
+        }
+        
+        .crystal-ball {
+            display: inline-block;
+            background: radial-gradient(circle at 30% 30%, #b8c5d6, #ff6b35, #ffd700);
+            border: 3px solid #ffd700;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+        }
+        
+        .crystal-ball:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+        }
+        
+        .crystal-symbol {
+            font-size: 2.5em;
+        }
+        
+        .fortune-display {
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            display: none;
+        }
+        
+        .fortune-display.visible {
+            display: block;
+        }
+        
+        .fortune-title {
+            font-size: 1.4em;
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .fortune-transit {
+            font-size: 1em;
+            color: #ff6b35;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .fortune-content {
+            font-size: 1.05em;
+            line-height: 1.6;
+            color: #e6e6e6;
+        }
+        
+        .fortune-close {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+        
+        .fortune-close:hover {
+            background: rgba(255, 215, 0, 0.3);
+        }
+        
+        .fortune-description {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 1.05em;
+            line-height: 1.6;
+            color: #b8c5d6;
+            text-align: center;
+        }
+        
+        .fortune-description p {
+            margin-bottom: 10px;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .floating-nav {
+                right: 15px;
+            }
+            
+            .title {
+                font-size: 2.2em;
+            }
+            
+            .entanglement-nodes {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .entanglement-node {
+                padding: 20px;
+            }
+            
+            .node-emoji {
+                font-size: 2.2em;
+            }
+            
+            .timeline-card {
+                min-width: 280px;
+            }
+            
+            .entanglement-nav-arrows {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3em;
+            }
+            
+            .entanglement-nav-left {
+                left: -22px;
+            }
+            
+            .entanglement-nav-right {
+                right: -22px;
+            }
+            
+            .entanglement-card {
+                padding: 25px;
+            }
+            
+            .fortune-display {
+                max-width: 300px;
+                padding: 20px;
+                margin: 0 15px;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .quantum-field {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <!-- Floating Side Navigation -->
+    <div class="floating-nav">
+        <div class="nav-dot" onclick="goToPage('index.html')" title="Home"></div>
+        <div class="nav-dot" onclick="goToPage('cards.html')" title="Cards"></div>
+        <div class="nav-dot" onclick="goToPage('stars.html')" title="Stars"></div>
+        <div class="nav-dot active" onclick="goToPage('quantum.html')" title="Quantum"></div>
+    </div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">⚡ Quantum Proof It Was Never Random</h1>
+            <p class="subtitle">Some relationships are meaningful. Ours is mathematically suspicious.</p>
+            <div class="birthday-message">⚡ Happy 65th Birthday! May 30, 2025 ✨</div>
+            
+            <div style="max-width: 600px; margin: 30px auto; font-size: 1.1em; line-height: 1.6; color: #e6e6e6; text-align: center;">
+                <p>If you're skeptical, start with the crystal ball—she already knows everything. But if you're curious why our lives keep syncing up, this page breaks it down. Not with sentiment, but with timing. Our charts don't mirror, but the patterns are consistent: same themes, different years. It's not fate—it's data. This is where the entanglement shows up.</p>
+            </div>
+            
+            <!-- Crystal Ball Predictions -->
+            <div class="fortune-section" style="margin: 40px 0 60px 0; padding: 40px 20px;">
+                <h2 class="section-title">🔮 Quantum-Algorithmic Divination Device</h2>
+                
+                <div class="fortune-description">
+                    <p style="text-align: center;">This isn't a Magic 8 Ball. It's a quantum-algorithmic divination device. Tap to trigger a random future insight—anchored in real astrology, filtered through our entangled charts, and written with zero fluff.</p>
+                </div>
+                
+                <div class="crystal-container">
+                    <div class="crystal-ball" onclick="showFortune()">
+                        <div class="crystal-symbol">🔮</div>
+                    </div>
+                    <div class="fortune-display" id="fortuneDisplay">
+                        <div class="fortune-title" id="fortuneTitle"></div>
+                        <div class="fortune-transit" id="fortuneTransit"></div>
+                        <div class="fortune-content" id="fortuneContent"></div>
+                        <button class="fortune-close" onclick="hideFortune()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quantum Field Visualization -->
+        <div class="quantum-field-section">
+            <h2 class="section-title">✨ Cosmic Causality: A Birthday Theory</h2>
+            <div class="quantum-field">
+                <div class="quantum-particles" id="quantumParticles"></div>
+                
+                <div style="max-width: 700px; margin: 0 auto 40px; font-size: 1.05em; line-height: 1.5; color: #b8c5d6; text-align: center; position: relative; z-index: 3;">
+                    Every connection has a source code. This section maps ours—seven key ways our charts lock in across signs, placements, and reactions. Different planets, same outcome: shared instinsts, mirrored triggers, and just enough contrast to make it interesting.
+                </div>
+                
+                <div class="entanglement-web">
+                    <div class="web-title">Chart Entanglement Cards</div>
+                    
+                    <div class="entanglement-carousel">
+                        <div class="entanglement-nav-arrows entanglement-nav-left" onclick="prevEntanglementCard()">‹</div>
+                        
+                        <div class="entanglement-cards-container">
+                            <div class="entanglement-cards-track" id="entanglementTrack">
+                                <div class="entanglement-card">
+                                    <span class="card-emoji">🌊</span>
+                                    <div class="card-title">Scorpio Sync</div>
+                                    <div class="card-connection">Peter's Neptune ↔ Sophia's Moon, Mars, Jupiter</div>
+                                    <div class="card-subtitle">Emotional X-Ray Vision</div>
+                                    <div class="card-copy">Peter senses the subtext. Sophia lives in it. This is generational healing disguised as casual conversations that go deeper than intended.</div>
+                                </div>
+                                
+                                <div class="entanglement-card">
+                                    <span class="card-emoji">💨</span>
+                                    <div class="card-title">Air Sign Relay</div>
+                                    <div class="card-connection">Peter's Gemini Stellium ↔ Sophia's Aquarius placements</div>
+                                    <div class="card-subtitle">Rapid-Fire Telepathy</div>
+                                    <div class="card-copy">Gemini gathers. Aquarius extrapolates. Ideas don't just bounce—they ricochet. This is how theories turn into tactics over coffee.</div>
+                                </div>
+                                
+                                <div class="entanglement-card">
+                                    <span class="card-emoji">🏔️</span>
+                                    <div class="card-title">Capricorn Link</div>
+                                    <div class="card-connection">Peter's Jupiter/Saturn ↔ Sophia's Mercury</div>
+                                    <div class="card-subtitle">Structural Integrity</div>
+                                    <div class="card-copy">Peter builds the blueprint. Sophia writes the operating manual. Same mountain, different altitude—but the architecture matches.</div>
+                                </div>
+                                
+                                <div class="entanglement-card">
+                                    <span class="card-emoji">🔥💧</span>
+                                    <div class="card-title">Steam Engine Moons</div>
+                                    <div class="card-connection">Peter's Leo Moon ↔ Sophia's Scorpio Moon</div>
+                                    <div class="card-subtitle">Drama + Depth = Durable</div>
+                                    <div class="card-copy">Peter runs warm. Sophia runs intense. Emotionally different, cosmically complementary. This is loyalty backed by mutual emotional fluency.</div>
+                                </div>
+                                
+                                <div class="entanglement-card">
+                                    <span class="card-emoji">⚡</span>
+                                    <div class="card-title">Mars-Mars Alignment</div>
+                                    <div class="card-connection">Peter's Aries Mars ↔ Sophia's Scorpio Mars</div>
+                                    <div class="card-subtitle">Crisis Mode: Activated</div>
+                                    <div class="card-copy">Both act fast under pressure—Peter with instinct, Sophia with strategy. When combined, it's a get-things-done energy that doesn't wait for permission.</div>
+                                </div>
+                                
+                                <div class="entanglement-card">
+                                    <span class="card-emoji">🧠</span>
+                                    <div class="card-title">Mercury Mirror</div>
+                                    <div class="card-connection">Peter's Mercury in Gemini ↔ Sophia's Mercury in Aquarius</div>
+                                    <div class="card-subtitle">Data Comes with Commentary</div>
+                                    <div class="card-copy">Peter talks to make sense of things. Sophia listens, then reroutes the narrative. Their thoughts don't match—but they definitely map.</div>
+                                </div>
+                                
+                                <div class="entanglement-card">
+                                    <span class="card-emoji">📍</span>
+                                    <div class="card-title">Rising Sign Feedback Loop</div>
+                                    <div class="card-connection">Peter's Virgo Rising ↔ Sophia's Gemini Rising</div>
+                                    <div class="card-subtitle">Observation vs. Improvisation</div>
+                                    <div class="card-copy">Peter sees what's off. Sophia asks why it was ever that way to begin with. This is how curiosity turns into iteration—again and again.</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="entanglement-nav-arrows entanglement-nav-right" onclick="nextEntanglementCard()">›</div>
+                    </div>
+                    
+                    <div class="entanglement-dots" id="entanglementDots">
+                        <div class="entanglement-dot active" onclick="goToEntanglementCard(0)"></div>
+                        <div class="entanglement-dot" onclick="goToEntanglementCard(1)"></div>
+                        <div class="entanglement-dot" onclick="goToEntanglementCard(2)"></div>
+                        <div class="entanglement-dot" onclick="goToEntanglementCard(3)"></div>
+                        <div class="entanglement-dot" onclick="goToEntanglementCard(4)"></div>
+                        <div class="entanglement-dot" onclick="goToEntanglementCard(5)"></div>
+                        <div class="entanglement-dot" onclick="goToEntanglementCard(6)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cosmic Synchronicity Report Timeline -->
+        <div class="timeline-section">
+            <h2 class="section-title">⚛️ Cosmic Synchronicity Report</h2>
+            <div style="max-width: 700px; margin: 0 auto 30px; font-size: 1.05em; line-height: 1.5; color: #b8c5d6; text-align: center;">
+                This section shows key years where major astrological transits in Peter and Sophia's charts aligned or echoed, revealing mirrored developmental shifts and shared timing across decades.
+            </div>
+            <div class="timeline-container">
+                <div class="timeline-scroll" id="timelineScroll">
+                    <div class="timeline-card">
+                        <div class="timeline-year">1994</div>
+                        <div class="timeline-title">🌟 Guide Mode Activated</div>
+                        <div class="timeline-description">
+                            Peter was in Jupiter Return. Sophia was born. The math checks out.
+                        </div>
+                        <div class="cosmic-details">
+                            <strong>Peter:</strong> Jupiter Return in Scorpio<br>
+                            <strong>Sophia:</strong> Aquarius Sun + Saturn
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-card">
+                        <div class="timeline-year">2000</div>
+                        <div class="timeline-title">🎓 Dual Programming Begins</div>
+                        <div class="timeline-description">
+                            Peter hit his Chiron Return. Sophia hit her first Saturn square. Both were learning how to adapt—just in different fonts.
+                        </div>
+                        <div class="cosmic-details">
+                            <strong>Peter:</strong> Chiron Return in Scorpio<br>
+                            <strong>Sophia:</strong> First Saturn Square
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-card">
+                        <div class="timeline-year">2009</div>
+                        <div class="timeline-title">♒ Identity Patch v1.0</div>
+                        <div class="timeline-description">
+                            Uranus crossed Sophia's Sun. Saturn poked Peter's old patterns. Neither walked away unchanged.
+                        </div>
+                        <div class="cosmic-details">
+                            <strong>Peter:</strong> Saturn square natal Saturn<br>
+                            <strong>Sophia:</strong> Uranus conjunct Aquarius Sun
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-card">
+                        <div class="timeline-year">2012</div>
+                        <div class="timeline-title">❓ Midlife Meets Quarterlife</div>
+                        <div class="timeline-description">
+                            Peter was questioning everything. Sophia was preparing to start. One of those moments where confusion felt shared.
+                        </div>
+                        <div class="cosmic-details">
+                            <strong>Peter:</strong> Uranus Opposition<br>
+                            <strong>Sophia:</strong> Saturn Return prep
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-card">
+                        <div class="timeline-year">2015</div>
+                        <div class="timeline-title">🔧 Friction Field Engaged</div>
+                        <div class="timeline-description">
+                            Peter was running hot. Sophia was dragging Saturn uphill. Opposite speeds, same direction.
+                        </div>
+                        <div class="cosmic-details">
+                            <strong>Peter:</strong> Uranus trine Mars in Aries<br>
+                            <strong>Sophia:</strong> Saturn square Aquarius Sun
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-card">
+                        <div class="timeline-year">2018</div>
+                        <div class="timeline-title">🌘 Eclipsed Moods, Mirrored Moons</div>
+                        <div class="timeline-description">
+                            Eclipses hit both their Moons. Emotional range expanded. Communication minimal, understanding high.
+                        </div>
+                        <div class="cosmic-details">
+                            <strong>Peter:</strong> Solar Eclipse on Leo Moon<br>
+                            <strong>Sophia:</strong> Lunar Eclipse on Taurus Moon
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-card">
+                        <div class="timeline-year">2020</div>
+                        <div class="timeline-title">🎭 Chaos as Love Language</div>
+                        <div class="timeline-description">
+                            Sophia wrapped her Saturn Return. Peter showed up in a Prada bag mask. Message received.
+                        </div>
+                        <div class="cosmic-details">
+                            <strong>Peter:</strong> Neptune square Sun<br>
+                            <strong>Sophia:</strong> Saturn Return complete
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-card">
+                        <div class="timeline-year">2023</div>
+                        <div class="timeline-title">🌌 The Pre-Shift Quiet</div>
+                        <div class="timeline-description">
+                            Pluto tapped Sophia's Sun. Peter was mid-Neptune fog. Less was said, more was noticed.
+                        </div>
+                        <div class="cosmic-details">
+                            <strong>Peter:</strong> Neptune opposite Mercury<br>
+                            <strong>Sophia:</strong> Pluto conjunct Aquarius Sun
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-card">
+                        <div class="timeline-year">2025</div>
+                        <div class="timeline-title">🎂 Peer Mode Unlocked</div>
+                        <div class="timeline-description">
+                            Peter entered new planetary shifts. Sophia hit Jupiter Return. Teacher and student swapped seats, no formality required.
+                        </div>
+                        <div class="cosmic-details">
+                            <strong>Peter:</strong> Uranus in Gemini, Saturn in Aries<br>
+                            <strong>Sophia:</strong> Jupiter Return
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-card">
+                        <div class="timeline-year">2026</div>
+                        <div class="timeline-title">🪞 Big Feelings, Different Filters</div>
+                        <div class="timeline-description">
+                            Peter's Leo Moon gets amplified. Sophia's Aquarius Sun gets challenged. One feels, the other thinks—then trades places.
+                        </div>
+                        <div class="cosmic-details">
+                            <strong>Peter:</strong> Jupiter conjunct Leo Moon<br>
+                            <strong>Sophia:</strong> Jupiter opposition Aquarius Sun
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-card">
+                        <div class="timeline-year">2028</div>
+                        <div class="timeline-title">🔄 Saturn Comes Back Around</div>
+                        <div class="timeline-description">
+                            Saturn returned to Gemini. Peter revisits old lessons. Sophia finds unusual clarity. Conversation becomes the practice.
+                        </div>
+                        <div class="cosmic-details">
+                            <strong>Peter:</strong> Saturn Return echo in Gemini<br>
+                            <strong>Sophia:</strong> Saturn trine Mercury in Aquarius
+                        </div>
+                    </div>
+                </div>
+                <div class="scroll-hint">← Scroll left and right to explore our quantum timeline →</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create twinkling stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 80;
+            
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Navigation functions
+        function goToPage(page) {
+            window.location.href = page;
+        }
+        
+        // Set active nav dot based on current page
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navDots = document.querySelectorAll('.nav-dot');
+            const pageOrder = ['index.html', 'cards.html', 'stars.html', 'quantum.html'];
+            const currentIndex = pageOrder.indexOf(currentPage);
+            
+            if (currentIndex !== -1) {
+                navDots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+            }
+        });
+        
+        // Create quantum particles
+        function createQuantumParticles() {
+            const container = document.getElementById('quantumParticles');
+            const colors = ['', 'gold', 'purple'];
+            
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = `particle ${colors[Math.floor(Math.random() * colors.length)]}`;
+                
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animation = `float ${3 + Math.random() * 4}s infinite ease-in-out`;
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Entanglement cards carousel
+        let currentEntanglementIndex = 0;
+        const totalEntanglementCards = 7;
+        
+        function nextEntanglementCard() {
+            currentEntanglementIndex = (currentEntanglementIndex + 1) % totalEntanglementCards;
+            updateEntanglementCarousel();
+        }
+        
+        function prevEntanglementCard() {
+            currentEntanglementIndex = (currentEntanglementIndex - 1 + totalEntanglementCards) % totalEntanglementCards;
+            updateEntanglementCarousel();
+        }
+        
+        function goToEntanglementCard(index) {
+            currentEntanglementIndex = index;
+            updateEntanglementCarousel();
+        }
+        
+        function updateEntanglementCarousel() {
+            const track = document.getElementById('entanglementTrack');
+            const dots = document.querySelectorAll('.entanglement-dot');
+            
+            if (track) {
+                track.style.transform = `translateX(-${currentEntanglementIndex * 100}%)`;
+            }
+            
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentEntanglementIndex);
+            });
+        }
+        
+        // Crystal ball predictions
+        function showFortune() {
+            const predictions = [
+                {
+                    title: "Watch for a Mentor Becoming a Mirror.",
+                    transit: "Transit: Your Saturn opposes my Mercury → wisdom once given is now coming back refracted.",
+                    content: "I'll ask you questions you once asked me. The answers will sound familiar—but scarier when they're mine."
+                },
+                {
+                    title: "Your Work Life Is About to Expand. Quietly.",
+                    transit: "Transit: Jupiter in Gemini (May 2024–June 2025) → lighting up your house of communication and local influence.",
+                    content: "It won't look like a promotion. It'll feel like being asked to show up more often as your full self. And people finally listening."
+                },
+                {
+                    title: "A Role You've Always Played, Officially Offered.",
+                    transit: "Transit: Saturn return themes reactivated for me during Neptune square",
+                    content: "Someone will ask you to step into something you've always done unofficially. Take the title. You already earned it."
+                },
+                {
+                    title: "We'll Have One of Those Conversations Again.",
+                    transit: "Transit: Mercury retrogrades in Earth signs through 2025",
+                    content: "Something we used to disagree on is coming back around, but this time we both know more. Try to resist the urge to be smug."
+                },
+                {
+                    title: "Your Legacy Is Under Renovation.",
+                    transit: "Transit: Pluto in Aquarius squaring your natal Leo Moon",
+                    content: "Something core to your identity will feel threatened. It's not. It's just being rewritten to last longer. (Yes, even legacies need editing.)"
+                },
+                {
+                    title: "You'll Find Yourself in a Room You Didn't Ask to Be In—Stay.",
+                    transit: "Transit: Uranus trine Sun (mid-2025)",
+                    content: "Someone unexpected will trust your opinion. Act like you belong there, even if you're wondering how the hell you got in. I'll be your reminder that this is the ripple effect of your lifetime of showing up."
+                },
+                {
+                    title: "We May Disagree, But It'll Matter Less.",
+                    transit: "Transit: Venus retrograde + North Node alignment",
+                    content: "A friction point will resurface. But this time we'll both feel less attached to being right. That's not disconnection. That's evolution."
+                }
+            ];
+            
+            const randomPrediction = predictions[Math.floor(Math.random() * predictions.length)];
+            
+            const titleEl = document.getElementById('fortuneTitle');
+            const transitEl = document.getElementById('fortuneTransit');
+            const contentEl = document.getElementById('fortuneContent');
+            const displayEl = document.getElementById('fortuneDisplay');
+            
+            if (titleEl && transitEl && contentEl && displayEl) {
+                titleEl.textContent = randomPrediction.title;
+                transitEl.textContent = randomPrediction.transit;
+                contentEl.textContent = randomPrediction.content;
+                displayEl.classList.add('visible');
+            }
+            
+            // Haptic feedback if available
+            if (navigator.vibrate) {
+                navigator.vibrate(100);
+            }
+        }
+        
+        function hideFortune() {
+            const displayEl = document.getElementById('fortuneDisplay');
+            if (displayEl) {
+                displayEl.classList.remove('visible');
+            }
+        }
+        
+        // Initialize everything safely
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            createQuantumParticles();
+            
+            // Timeline scroll hint
+            const timelineScroll = document.getElementById('timelineScroll');
+            if (timelineScroll) {
+                timelineScroll.addEventListener('scroll', function() {
+                    const hint = document.querySelector('.scroll-hint');
+                    if (hint) hint.style.opacity = '0.3';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
