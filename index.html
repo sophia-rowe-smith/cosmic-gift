@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Written in the Stars - Peter's Birthday Gift</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%);
+            color: #f5f5f5;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Twinkling Stars Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Floating Navigation */
+        .floating-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-dot::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-dot.active::after {
+            background: #ffd700;
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .nav-dot:hover::after {
+            background: rgba(255, 215, 0, 0.7);
+            transform: scale(1.2);
+        }
+        
+        .nav-tooltip {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffd700;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-dot:hover .nav-tooltip {
+            opacity: 1;
+            transform: translateY(-50%) translateX(-5px);
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+        
+        .title {
+            font-size: clamp(2.5em, 8vw, 4em);
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700, #ff6b35);
+            background-size: 400% 400%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            animation: gradientShift 4s ease-in-out infinite;
+            font-weight: bold;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .subtitle {
+            font-size: clamp(1.1em, 4vw, 1.4em);
+            color: #b8c5d6;
+            font-style: italic;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        
+        .birthday-message {
+            font-size: clamp(1em, 3vw, 1.2em);
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px 30px;
+            border-radius: 25px;
+            display: inline-block;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 40px 0;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+        }
+        
+        .card h2 {
+            color: #ffd700;
+            margin-bottom: 25px;
+            font-size: clamp(1.5em, 5vw, 2.2em);
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .card p {
+            line-height: 1.7;
+            color: #e6e6e6;
+            font-size: clamp(1em, 3.5vw, 1.2em);
+            margin-bottom: 20px;
+        }
+        
+        /* Interactive Charts Section */
+        .charts-section {
+            margin: 60px 0;
+        }
+        
+        .charts-context {
+            margin-bottom: 0;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .charts-context h3 {
+            color: #ffd700;
+            font-size: clamp(1.2em, 3.8vw, 1.5em);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .charts-context p {
+            color: #b8c5d6;
+            font-size: clamp(0.85em, 2.8vw, 1em);
+            line-height: 1.5;
+            font-style: italic;
+        }
+        
+        .chart-controls {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            backdrop-filter: blur(10px);
+            gap: 25px;
+        }
+        
+        .chart-controls-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .house-system-toggle {
+            display: flex;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 5px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .toggle-btn {
+            padding: 10px 18px;
+            background: transparent;
+            border: none;
+            color: #b8c5d6;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            font-size: clamp(0.8em, 2.5vw, 0.9em);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+        }
+        
+        .toggle-btn.active {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            transform: scale(1.05);
+        }
+        
+        .chart-navigation {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .chart-arrow {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            color: #ffd700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .chart-arrow:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .chart-indicator {
+            color: #b8c5d6;
+            font-size: 0.9em;
+            margin: 0 10px;
+        }
+        
+        .charts-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+        
+        .charts-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            gap: 20px;
+        }
+        
+        .chart-card {
+            min-width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .chart-title {
+            font-size: clamp(1.4em, 4vw, 1.8em);
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .birth-info {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #b8c5d6;
+            font-size: clamp(0.9em, 2.8vw, 1.1em);
+        }
+        
+        .house-system-info {
+            text-align: center;
+            color: #ffd700;
+            font-size: clamp(0.8em, 2.5vw, 0.9em);
+            margin-bottom: 20px;
+            font-style: italic;
+            padding: 8px 16px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 15px;
+            display: inline-block;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .placements {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .placement {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-height: 44px;
+        }
+        
+        .placement:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(5px);
+        }
+        
+        .placement.sun { border-left-color: #ff6b35; }
+        .placement.moon { border-left-color: #c8c8c8; }
+        .placement.mercury { border-left-color: #ffd23f; }
+        .placement.venus { border-left-color: #ff69b4; }
+        .placement.mars { border-left-color: #ff4757; }
+        .placement.jupiter { border-left-color: #7bed9f; }
+        .placement.saturn { border-left-color: #747d8c; }
+        .placement.ascendant { border-left-color: #70a1ff; }
+        
+        .planet {
+            font-weight: bold;
+            color: #f5f5f5;
+            font-size: clamp(0.9em, 2.8vw, 1em);
+        }
+        
+        .sign-house {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+        }
+        
+        .sign {
+            color: #ffd700;
+            font-style: italic;
+            font-size: clamp(0.9em, 2.8vw, 1em);
+            font-weight: bold;
+        }
+        
+        .house {
+            color: #b8c5d6;
+            font-size: clamp(0.75em, 2.2vw, 0.85em);
+            font-style: normal;
+            margin-top: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Connection Section */
+        .connection-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 60px 0;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .section-title {
+            font-size: clamp(1.8em, 6vw, 2.5em);
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+        
+        .connection-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid #ffd700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .connection-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+        
+        .connection-title {
+            font-size: clamp(1.2em, 3.8vw, 1.4em);
+            color: #ffd700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+        
+        .connection-text {
+            line-height: 1.6;
+            color: #e6e6e6;
+            font-size: clamp(0.95em, 3vw, 1.1em);
+        }
+        
+        /* Final Message */
+        .final-message {
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 53, 0.1));
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 50px 0;
+            text-align: center;
+        }
+        
+        .final-message h2 {
+            font-size: clamp(1.8em, 6vw, 2.4em);
+            color: #ffd700;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        .final-message p {
+            font-size: clamp(1.1em, 3.8vw, 1.3em);
+            line-height: 1.6;
+            color: #f0f0f0;
+            margin-bottom: 20px;
+        }
+        
+        .final-highlight {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: clamp(1.2em, 4vw, 1.4em);
+            margin-top: 25px;
+            font-style: italic;
+        }
+        
+        /* Interactive Elements */
+        .celebrate-btn {
+            background: linear-gradient(45deg, #ffd700, #ff6b35);
+            border: none;
+            padding: 20px 40px;
+            border-radius: 30px;
+            color: white;
+            font-size: clamp(1.1em, 3.5vw, 1.3em);
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+            min-height: 44px;
+            font-family: inherit;
+        }
+        
+        .celebrate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .floating-nav {
+                right: 15px;
+            }
+            
+            .card {
+                padding: 30px 20px;
+            }
+            
+            .chart-controls {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+            }
+            
+            .charts-section {
+                margin: 40px 0;
+            }
+            
+            .connection-section,
+            .final-message {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .chart-card {
+                padding: 20px 15px;
+            }
+            
+            .placement {
+                padding: 10px 12px;
+            }
+        }
+        
+        /* Performance optimizations */
+        .charts-track {
+            will-change: transform;
+        }
+        
+        .placement {
+            will-change: transform;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <!-- Floating Navigation -->
+    <div class="floating-nav">
+        <div class="nav-dot active" data-section="home">
+            <div class="nav-tooltip">🎁 Home</div>
+        </div>
+        <div class="nav-dot" data-section="charts">
+            <div class="nav-tooltip">🌟 Charts</div>
+        </div>
+        <div class="nav-dot" data-section="connection">
+            <div class="nav-tooltip">✨ Connection</div>
+        </div>
+        <div class="nav-dot" data-section="message">
+            <div class="nav-tooltip">💝 Message</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Header Section -->
+        <section id="home" class="header">
+            <h1 class="title">This Gift Is Time-Zoned, Star-Aligned, and Powered by Me</h1>
+            <p class="subtitle">A Cosmic Birthday Experience Crafted by Your Goddaughter</p>
+            <div class="birthday-message">🎂 Happy 65th Birthday! May 30, 2025 ✨</div>
+        </section>
+        
+        <!-- Introduction Card -->
+        <div class="card">
+            <h2>Your Goddaughter's Quantum Thank You</h2>
+            <p>After three decades of your quiet interventions, sharp insights, and absurd analogies, I wanted to return the favor—cosmically. This isn't just a birthday card. It's a full constellation of everything I've learned from you, through you, and because of you.</p>
+            <p>The stellar forces that made you the ideal godfather for an Aquarius kid who needed both intellectual freedom and emotional security—plus someone who could decode my Scorpio Moon intensity without running away.</p>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="celebrate-btn" onclick="celebrate()">🎉 Celebrate Our Cosmic Bond! 🎉</button>
+            </div>
+        </div>
+        
+        <!-- Interactive Charts Section -->
+        <section id="charts" class="charts-section">
+            <div class="chart-controls">
+                <div class="charts-context">
+                    <h3>📋 These Charts Aren't Just Aesthetic — They're Our Cosmic Blueprint</h3>
+                    <p>They explain why we think the same things at the same time, why you call right before I unravel, and why your advice lands with spooky accuracy.</p>
+                </div>
+                
+                <div class="chart-controls-row">
+                    <div class="house-system-toggle">
+                        <button class="toggle-btn active" onclick="switchHouseSystem('placidus')">Placidus</button>
+                        <button class="toggle-btn" onclick="switchHouseSystem('porphyry')">Porphyry</button>
+                    </div>
+                    
+                    <div class="chart-navigation">
+                        <div class="chart-arrow" onclick="prevChart()">‹</div>
+                        <div class="chart-indicator">
+                            <span id="chartCounter">1 / 2</span>
+                        </div>
+                        <div class="chart-arrow" onclick="nextChart()">›</div>
+                    </div>
+                </div>
+                
+                <div class="charts-container">
+                    <div class="charts-track" id="chartsTrack">
+                    <!-- Peter's Chart -->
+                    <div class="chart-card">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div class="house-system-info" id="houseSystemInfo1">Placidus House System</div>
+                        </div>
+                        <h2 class="chart-title">🌟 Your Cosmic Blueprint</h2>
+                        <div class="birth-info">
+                            May 30, 1960 • 1:15 PM<br>
+                            Seattle, Washington
+                        </div>
+                        <div class="placements" id="peterPlacements">
+                            <div class="placement sun" onclick="showPlanetInfo('Sun', 'Gemini')">
+                                <span class="planet">☉ Sun</span>
+                                <div class="sign-house">
+                                    <span class="sign">Gemini</span>
+                                    <span class="house" id="peter-sun-house">10th House</span>
+                                </div>
+                            </div>
+                            <div class="placement moon" onclick="showPlanetInfo('Moon', 'Leo')">
+                                <span class="planet">☽ Moon</span>
+                                <div class="sign-house">
+                                    <span class="sign">Leo</span>
+                                    <span class="house" id="peter-moon-house">12th House</span>
+                                </div>
+                            </div>
+                            <div class="placement ascendant" onclick="showPlanetInfo('Rising', 'Virgo')">
+                                <span class="planet">↗ Rising</span>
+                                <div class="sign-house">
+                                    <span class="sign">Virgo</span>
+                                    <span class="house">1st House</span>
+                                </div>
+                            </div>
+                            <div class="placement mercury" onclick="showPlanetInfo('Mercury', 'Gemini')">
+                                <span class="planet">☿ Mercury</span>
+                                <div class="sign-house">
+                                    <span class="sign">Gemini</span>
+                                    <span class="house" id="peter-mercury-house">10th House</span>
+                                </div>
+                            </div>
+                            <div class="placement venus" onclick="showPlanetInfo('Venus', 'Gemini')">
+                                <span class="planet">♀ Venus</span>
+                                <div class="sign-house">
+                                    <span class="sign">Gemini</span>
+                                    <span class="house" id="peter-venus-house">9th House</span>
+                                </div>
+                            </div>
+                            <div class="placement mars" onclick="showPlanetInfo('Mars', 'Aries')">
+                                <span class="planet">♂ Mars</span>
+                                <div class="sign-house">
+                                    <span class="sign">Aries</span>
+                                    <span class="house" id="peter-mars-house">8th House</span>
+                                </div>
+                            </div>
+                            <div class="placement jupiter" onclick="showPlanetInfo('Jupiter', 'Capricorn')">
+                                <span class="planet">♃ Jupiter</span>
+                                <div class="sign-house">
+                                    <span class="sign">Capricorn</span>
+                                    <span class="house" id="peter-jupiter-house">5th House</span>
+                                </div>
+                            </div>
+                            <div class="placement saturn" onclick="showPlanetInfo('Saturn', 'Capricorn')">
+                                <span class="planet">♄ Saturn</span>
+                                <div class="sign-house">
+                                    <span class="sign">Capricorn</span>
+                                    <span class="house" id="peter-saturn-house">5th House</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sophia's Chart -->
+                    <div class="chart-card">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div class="house-system-info" id="houseSystemInfo2">Placidus House System</div>
+                        </div>
+                        <h2 class="chart-title">🌙 My Cosmic Blueprint</h2>
+                        <div class="birth-info">
+                            January 22, 1994 • 2:22 AM<br>
+                            Lake Forest, Illinois
+                        </div>
+                        <div class="placements" id="sophiaPlacements">
+                            <div class="placement sun" onclick="showPlanetInfo('Sun', 'Aquarius')">
+                                <span class="planet">☉ Sun</span>
+                                <div class="sign-house">
+                                    <span class="sign">Aquarius</span>
+                                    <span class="house" id="sophia-sun-house">9th House</span>
+                                </div>
+                            </div>
+                            <div class="placement moon" onclick="showPlanetInfo('Moon', 'Taurus')">
+                                <span class="planet">☽ Moon</span>
+                                <div class="sign-house">
+                                    <span class="sign">Taurus</span>
+                                    <span class="house" id="sophia-moon-house">12th House</span>
+                                </div>
+                            </div>
+                            <div class="placement ascendant" onclick="showPlanetInfo('Rising', 'Gemini')">
+                                <span class="planet">↗ Rising</span>
+                                <div class="sign-house">
+                                    <span class="sign">Gemini</span>
+                                    <span class="house">1st House</span>
+                                </div>
+                            </div>
+                            <div class="placement mercury" onclick="showPlanetInfo('Mercury', 'Aquarius')">
+                                <span class="planet">☿ Mercury</span>
+                                <div class="sign-house">
+                                    <span class="sign">Aquarius</span>
+                                    <span class="house" id="sophia-mercury-house">9th House</span>
+                                </div>
+                            </div>
+                            <div class="placement venus" onclick="showPlanetInfo('Venus', 'Aquarius')">
+                                <span class="planet">♀ Venus</span>
+                                <div class="sign-house">
+                                    <span class="sign">Aquarius</span>
+                                    <span class="house" id="sophia-venus-house">9th House</span>
+                                </div>
+                            </div>
+                            <div class="placement mars" onclick="showPlanetInfo('Mars', 'Capricorn')">
+                                <span class="planet">♂ Mars</span>
+                                <div class="sign-house">
+                                    <span class="sign">Capricorn</span>
+                                    <span class="house" id="sophia-mars-house">8th House</span>
+                                </div>
+                            </div>
+                            <div class="placement jupiter" onclick="showPlanetInfo('Jupiter', 'Scorpio')">
+                                <span class="planet">♃ Jupiter</span>
+                                <div class="sign-house">
+                                    <span class="sign">Scorpio</span>
+                                    <span class="house" id="sophia-jupiter-house">6th House</span>
+                                </div>
+                            </div>
+                            <div class="placement saturn" onclick="showPlanetInfo('Saturn', 'Aquarius')">
+                                <span class="planet">♄ Saturn</span>
+                                <div class="sign-house">
+                                    <span class="sign">Aquarius</span>
+                                    <span class="house" id="sophia-saturn-house">9th House</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Connection Analysis -->
+        <section id="connection" class="connection-section">
+            <h2 class="section-title">Your Birth Chart Explains a Lot. Mine Confirms It.</h2>
+            
+            <div class="connection-item">
+                <h3 class="connection-title">
+                    <span>🌬️</span>
+                    Air Sign Mental Telepathy
+                </h3>
+                <p class="connection-text">
+                    Your Gemini Sun + my Aquarius Sun = perfect intellectual harmony. We think on similar wavelengths while bringing different perspectives. You bring communication mastery and knowledge-sharing, while I bring innovation and big-picture thinking. It's intellectual symbiosis at its finest.
+                </p>
+            </div>
+            
+            <div class="connection-item">
+                <h3 class="connection-title">
+                    <span>🦁</span>
+                    The Leo Moon Warmth Meets Taurus Stability
+                </h3>
+                <p class="connection-text">
+                    Your Leo Moon's generous, protective energy perfectly balances my Taurus Moon's need for stability and security. You bring the sunshine and celebration, while I bring grounding. Your Leo Moon loyalty meets my Taurus Moon steadiness—a bond that's both joyful and unshakeable.
+                </p>
+            </div>
+            
+            <div class="connection-item">
+                <h3 class="connection-title">
+                    <span>✨</span>
+                    Rising Sign Growth Dynamic
+                </h3>
+                <p class="connection-text">
+                    Your Virgo rising's desire to help and improve others combines perfectly with my Gemini rising's curiosity and adaptability. You see what needs to be optimized, while I bring versatility to implement changes. Together we create sustainable growth that's both practical and engaging.
+                </p>
+            </div>
+            
+            <div class="connection-item">
+                <h3 class="connection-title">
+                    <span>🔥</span>
+                    Mars in Aries Action Hero
+                </h3>
+                <p class="connection-text">
+                    Your Mars in Aries explains why you don't just offer support—you take immediate action. When you see someone you care about struggling, you jump in with concrete help. You're not passive about the people you love; you actively champion them with decisive energy.
+                </p>
+            </div>
+        </section>
+        
+        <!-- Final Message -->
+        <section id="message" class="final-message">
+            <h2>💌 The Universe Had a Plan</h2>
+            <p>Our charts? Built for clarity, protection, and mischief with meaning. My growth? Fueled by your timing, your presence, and your belief. So no, you don't get a card—you get a full cosmic experience. This is what happens when you nurture an astrology nerd.</p>
+        </section>
+    </div>
+    
+    <script>
+        // State management
+        let currentChartIndex = 0;
+        let currentHouseSystem = 'placidus';
+        
+        // House system data
+        const houseSystemData = {
+            placidus: {
+                peter: {
+                    sun: "10th House",
+                    moon: "12th House", 
+                    mercury: "10th House",
+                    venus: "9th House",
+                    mars: "8th House",
+                    jupiter: "5th House",
+                    saturn: "5th House"
+                },
+                sophia: {
+                    sun: "9th House",
+                    moon: "12th House",
+                    mercury: "9th House", 
+                    venus: "9th House",
+                    mars: "8th House",
+                    jupiter: "6th House",
+                    saturn: "9th House"
+                }
+            },
+            porphyry: {
+                peter: {
+                    sun: "9th House",
+                    moon: "11th House",
+                    mercury: "9th House",
+                    venus: "9th House", 
+                    mars: "7th House",
+                    jupiter: "4th House",
+                    saturn: "4th House"
+                },
+                sophia: {
+                    sun: "8th House",
+                    moon: "11th House",
+                    mercury: "8th House",
+                    venus: "8th House",
+                    mars: "7th House", 
+                    jupiter: "5th House",
+                    saturn: "8th House"
+                }
+            }
+        };
+        
+        // Create twinkling stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 120;
+            
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Navigation functions
+        function nextChart() {
+            currentChartIndex = (currentChartIndex + 1) % 2;
+            updateChartsDisplay();
+        }
+        
+        function prevChart() {
+            currentChartIndex = (currentChartIndex - 1 + 2) % 2;
+            updateChartsDisplay();
+        }
+        
+        function updateChartsDisplay() {
+            const track = document.getElementById('chartsTrack');
+            const counter = document.getElementById('chartCounter');
+            
+            track.style.transform = `translateX(-${currentChartIndex * 100}%)`;
+            counter.textContent = `${currentChartIndex + 1} / 2`;
+        }
+        
+        // House system switching
+        function switchHouseSystem(system) {
+            currentHouseSystem = system;
+            
+            // Update toggle buttons
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update system info display
+            const info1 = document.getElementById('houseSystemInfo1');
+            const info2 = document.getElementById('houseSystemInfo2');
+            
+            const systemName = system === 'placidus' ? 'Placidus' : 'Porphyry';
+            info1.textContent = `${systemName} House System`;
+            info2.textContent = `${systemName} House System`;
+            
+            // Update house positions
+            updateHousePositions();
+            
+            // Visual feedback
+            [info1, info2].forEach(info => {
+                info.style.color = '#ffd700';
+                info.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    info.style.color = '#ffd700';
+                    info.style.transform = 'scale(1)';
+                }, 500);
+            });
+            
+            // Haptic feedback if available
+            if (navigator.vibrate) {
+                navigator.vibrate(30);
+            }
+        }
+        
+        // Update house positions based on selected system
+        function updateHousePositions() {
+            const peterData = houseSystemData[currentHouseSystem].peter;
+            const sophiaData = houseSystemData[currentHouseSystem].sophia;
+            
+            // Update Peter's houses
+            Object.keys(peterData).forEach(planet => {
+                const element = document.getElementById(`peter-${planet}-house`);
+                if (element) {
+                    element.textContent = peterData[planet];
+                    // Animation for change
+                    element.style.color = '#ffd700';
+                    element.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        element.style.color = '#b8c5d6';
+                        element.style.transform = 'scale(1)';
+                    }, 600);
+                }
+            });
+            
+            // Update Sophia's houses
+            Object.keys(sophiaData).forEach(planet => {
+                const element = document.getElementById(`sophia-${planet}-house`);
+                if (element) {
+                    element.textContent = sophiaData[planet];
+                    // Animation for change
+                    element.style.color = '#ffd700';
+                    element.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        element.style.color = '#b8c5d6';
+                        element.style.transform = 'scale(1)';
+                    }, 600);
+                }
+            });
+        }
+        
+        // Interactive planet info
+        function showPlanetInfo(planet, sign) {
+            const placement = event.currentTarget;
+            placement.style.background = 'rgba(255, 215, 0, 0.2)';
+            placement.style.borderLeftWidth = '6px';
+            
+            if (navigator.vibrate) {
+                navigator.vibrate(40);
+            }
+            
+            setTimeout(() => {
+                placement.style.background = 'rgba(255, 255, 255, 0.08)';
+                placement.style.borderLeftWidth = '4px';
+            }, 1000);
+        }
+        
+        // Smooth scroll navigation
+        function smoothScrollTo(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+        
+        // Navigation dot functionality
+        function initializeNavigation() {
+            const navDots = document.querySelectorAll('.nav-dot');
+            const sections = ['home', 'charts', 'connection', 'message'];
+            
+            navDots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    smoothScrollTo(sections[index]);
+                    updateActiveNavDot(index);
+                });
+            });
+            
+            // Update active nav dot on scroll
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY + window.innerHeight / 2;
+                
+                sections.forEach((section, index) => {
+                    const element = document.getElementById(section);
+                    if (element) {
+                        const rect = element.getBoundingClientRect();
+                        const elementTop = rect.top + window.scrollY;
+                        const elementBottom = elementTop + rect.height;
+                        
+                        if (scrollPosition >= elementTop && scrollPosition <= elementBottom) {
+                            updateActiveNavDot(index);
+                        }
+                    }
+                });
+            });
+        }
+        
+        function updateActiveNavDot(activeIndex) {
+            const navDots = document.querySelectorAll('.nav-dot');
+            navDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === activeIndex);
+            });
+        }
+        
+        // Celebration function
+        function celebrate() {
+            const emojis = ['⭐', '🌟', '✨', '💫', '🎉', '🎊', '🌠', '⚡'];
+            
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-50px';
+                    confetti.style.fontSize = Math.random() * 2 + 1.5 + 'em';
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.zIndex = '1000';
+                    confetti.style.transition = 'all 3s ease-out';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.style.transform = `translateY(100vh) rotate(${Math.random() * 360}deg)`;
+                        confetti.style.opacity = '0';
+                    }, 100);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 80);
+            }
+            
+            // Haptic feedback
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100, 50, 100]);
+            }
+        }
+        
+        // Touch gestures for chart navigation
+        function initializeTouchGestures() {
+            let startX = 0;
+            let startY = 0;
+            
+            const chartsContainer = document.querySelector('.charts-container');
+            
+            chartsContainer.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            });
+            
+            chartsContainer.addEventListener('touchend', (e) => {
+                const endX = e.changedTouches[0].clientX;
+                const endY = e.changedTouches[0].clientY;
+                const deltaX = startX - endX;
+                const deltaY = startY - endY;
+                
+                // Only trigger if horizontal swipe is more significant than vertical
+                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                    if (deltaX > 0) {
+                        nextChart();
+                    } else {
+                        prevChart();
+                    }
+                }
+            });
+        }
+        
+        // Keyboard navigation
+        function initializeKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        prevChart();
+                        break;
+                    case 'ArrowRight':
+                        nextChart();
+                        break;
+                    case '1':
+                        smoothScrollTo('home');
+                        break;
+                    case '2':
+                        smoothScrollTo('charts');
+                        break;
+                    case '3':
+                        smoothScrollTo('connection');
+                        break;
+                    case '4':
+                        smoothScrollTo('message');
+                        break;
+                }
+            });
+        }
+        
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            initializeNavigation();
+            initializeTouchGestures();
+            initializeKeyboardNavigation();
+            updateChartsDisplay();
+        });
+    </script>
+</body>
+</html>
